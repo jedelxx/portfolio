@@ -154,7 +154,7 @@ const App = () => {
         <section id="home" className="relative flex justify-center items-center min-h-screen overflow-hidden">
           
         {/* Big Bold Background Text - 3 Clean Lines */}
-        <h1 className="absolute z-0 top-[10%] left-[2%] text-6xl md:text-8xl lg:text-9xl font-black uppercase text-[orange]/90 select-none tracking-tighter text-left w-full px-8 md:px-16 max-w-7xl leading-none">
+        <h1 className="absolute z-0 top-[10%] left-[2%] text-6xl md:text-8xl lg:text-9xl font-black uppercase text-neon-blue select-none tracking-tighter text-left w-full px-8 md:px-16 max-w-7xl leading-none">
           <span ref={addToBgLines} className="block">
             EMPOWER
           </span>

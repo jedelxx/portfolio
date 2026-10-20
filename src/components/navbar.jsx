@@ -5,6 +5,13 @@ import { navLinks } from '../../constants/index.js';
 const Navbar = ({ isScrolled }) => {
   const navRef = useRef(null);
 
+  const playHoverSound = () => {
+    const audio = new Audio(`${import.meta.env.BASE_URL}select.m4a`);
+    audio.volume = 0.2;
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  };
+
   useEffect(() => {
     gsap.fromTo(
       navRef.current,
@@ -40,6 +47,7 @@ const Navbar = ({ isScrolled }) => {
           <li key={link.id}>
             <a 
               href={`#${link.id}`} 
+              onMouseEnter={playHoverSound}
               className="relative flex items-center font-semibold uppercase tracking-widest text-sm py-2 group transition-all"
             >
               {/* Hover Caret Effect */}

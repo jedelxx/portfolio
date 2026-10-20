@@ -24,6 +24,8 @@ const App = () => {
     }
   };
 
+  
+
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
@@ -65,7 +67,7 @@ const App = () => {
         trigger: aboutRef.current,
         start: 'top 90%', 
         end: 'top 10%',   
-        scrub: 1.5,           
+        scrub: 1.2,           
       },
     });
 
@@ -129,7 +131,7 @@ const App = () => {
             ref={introRef}
             className="text-white font-extrabold tracking-wider text-5xl md:text-5xl font-mono !text-white"          
           >
-            jedel<span className="text-[pink]">.</span>
+            jedel<span className="text-neon-blue">.</span>
           </h1>
         </div>
       )}
@@ -173,16 +175,42 @@ const App = () => {
             alt="Profile" 
             className="relative z-10 max-w-md md:max-w-lg h-auto object-contain pointer-events-none"
           />
-
         </section>
 
-        {/* About Section */}
-        <section id="about" ref={aboutRef} className="relative z-10 min-h-screen flex flex-col justify-center items-center px-6 text-[#FBFBFB]">
-          <h2 className="text-3xl font-bold mb-4">About Me</h2>
-          <p className="max-w-xl text-center opacity-90">
-            Building high-performance web applications with React, Tailwind, and GSAP.
-          </p>
-        </section>
+      {/* About Section */}
+      <section id="about" ref={aboutRef} className="relative z-10 min-h-screen flex items-center px-8 md:px-16 text-[#FBFBFB] py-20">
+        {/* Changed max-w-6xl to max-w-7xl to give it more breathing room */}
+        <div className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+          
+          {/* Left Column: Text Content (Takes up 7 out of 12 columns ≈ 58%) */}
+          <div className="text-left space-y-6 md:col-span-7 pl-4 md:pl-8">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-neon-blue tracking-wide">
+              Hi! I’m Jenn (aka Jedel)!
+            </h2>
+            
+            <p className="text-base md:text-xl font-semibold text-white/90 leading-relaxed">
+              A third-year Information Technology student specializing in Information Systems Development at Polytechnic University of the Philippines – Manila.
+            </p>
+
+            <p className="text-base md:text-lg text-white/70 leading-relaxed">
+              Currently, I’m diving deep into the world of front-end development, blending logic with design to build clean, intuitive user experiences.
+            </p>
+
+            <p className="text-base md:text-lg text-white/70 leading-relaxed">
+              Beyond tech, I have a passion for videography, video editing, and gaming. When I’m not coding or designing, you’ll likely find me hanging out with street cats—my ultimate stress relievers!
+            </p>
+          </div>
+
+          {/* Right Column: Profile Image (Takes up 5 out of 12 columns ≈ 42%) */}
+          <div className="flex justify-end items-center w-full h-full pr-4 md:pr-12 md:col-span-5">
+            <img 
+              src={`${import.meta.env.BASE_URL}me1.jpeg`} 
+              alt="portrait" 
+              className="max-w-xs w-full h-auto object-cover rounded-2xl shadow-2xl border border-white/10"
+            />
+          </div>
+        </div>
+      </section>
       </main>
     </>
   );

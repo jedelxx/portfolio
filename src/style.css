@@ -7,7 +7,9 @@
   --color-blue: #253C6D;
   --color-orange: #F2842F;
   --color-white: #FBFBFB;
-  --color-black: #2C2C2C;
+  --color-black: #0B0909;
+  --color-pink: #FA4EAB;
+  --color-light-orange: #DE7D48;
 }
 
 @utility flex-center {

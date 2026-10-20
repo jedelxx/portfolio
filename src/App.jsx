@@ -12,7 +12,17 @@ const App = () => {
   const introRef = useRef(null);
   const heroRef = useRef(null);
   const aboutRef = useRef(null);
-  const bgOverlayRef = useRef(null); // Ref for solid dark background overlay
+  const bgOverlayRef = useRef(null); 
+  
+  // 1. Array ref to store the text lines
+  const bgLinesRef = useRef([]);
+
+  // 2. Helper function goes right here!
+  const addToBgLines = (el) => {
+    if (el && !bgLinesRef.current.includes(el)) {
+      bgLinesRef.current.push(el);
+    }
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -54,17 +64,35 @@ const App = () => {
       scrollTrigger: {
         trigger: aboutRef.current,
         start: 'top 90%', 
-        end: 'top 10%',  
+        end: 'top 10%',   
         scrub: 1.5,           
       },
     });
+
+    gsap.fromTo(
+      bgLinesRef.current,
+      { 
+        opacity: 0, 
+        x: -100 
+      }, 
+      {
+        opacity: 1,
+        x: 0, 
+        duration: 1.4,
+        ease: 'power3.out',
+        stagger: 0.25, // Staggers line by line sequentially
+        delay: 0.7,
+      }
+    );
     
     gsap.fromTo(
       heroRef.current,
-      { opacity: 0, y: 250 },
+      { opacity: 0, 
+        x: -250 
+      },
       {
         opacity: 1,
-        y: 0,
+        x: 0,
         duration: 1.5,
         ease: 'circ.inOut',
         scrollTrigger: {
@@ -96,12 +124,12 @@ const App = () => {
     <>
       {/* preloader */}
       {!isLoaded && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#2C2C2C]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[black]">
           <h1 
             ref={introRef}
-            className="text-white font-extrabold tracking-wider uppercase text-5xl md:text-5xl font-mono !text-white"          
+            className="text-white font-extrabold tracking-wider text-5xl md:text-5xl font-mono !text-white"          
           >
-            jedel<span className="text-[#F2842F]">.</span>
+            jedel<span className="text-[pink]">.</span>
           </h1>
         </div>
       )}
@@ -109,7 +137,7 @@ const App = () => {
       {/* Global Full-Screen Base Light Background */}
       <div className="fixed inset-0 bg-[#FBFBFB] z-0" />
 
-      {/* Global Full-Screen Solid Dark Background Overlay (Fades in on scroll) */}
+      {/* Global Full-Screen Solid Dark Background Overlay */}
       <div 
         ref={bgOverlayRef}
         className="fixed inset-0 bg-black opacity-0 pointer-events-none z-0"
@@ -123,13 +151,29 @@ const App = () => {
         <Navbar isScrolled={isScrolled} />
         
         {/* Hero Section */}
-        <section id="home" className="relative z-10 flex justify-center items-center min-h-screen">
+        <section id="home" className="relative flex justify-center items-center min-h-screen overflow-hidden">
+          
+        {/* Big Bold Background Text - 3 Clean Lines */}
+        <h1 className="absolute z-0 top-[10%] left-[2%] text-6xl md:text-8xl lg:text-9xl font-black uppercase text-[orange]/90 select-none tracking-tighter text-left w-full px-8 md:px-16 max-w-7xl leading-none">
+          <span ref={addToBgLines} className="block">
+            EMPOWER
+          </span>
+          <span ref={addToBgLines} className="block">
+            GIRLS, BUILD
+          </span>
+          <span ref={addToBgLines} className="block">
+            TECHNOLOGY.
+          </span>
+        </h1>
+
+          {/* Foreground Profile Image */}
           <img 
             ref={heroRef}
-            src="/me.png" 
+            src={`${import.meta.env.BASE_URL}me.png`}
             alt="Profile" 
-            className="max-w-md md:max-w-lg h-auto object-contain"
+            className="relative z-10 max-w-md md:max-w-lg h-auto object-contain pointer-events-none"
           />
+
         </section>
 
         {/* About Section */}

@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import 'tailwindcss';
+
+@theme {
+  --color-dark-blue: #1b1f3d;
+  --color-blue: #253C6D;
+  --color-orange: #F2842F;
+  --color-white: #FBFBFB;
+  --color-black: #2C2C2C;
+}
+
+@utility flex-center {
+  @apply flex justify-center items-center;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  background-color: #FBFBFB;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+section {
+  width: 100%;
+  height: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}

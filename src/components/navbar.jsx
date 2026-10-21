@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { navLinks } from '../../constants/index.js';
 
-const Navbar = ({ isScrolled }) => {
+const Navbar = ({ isScrolled, isDarkBg }) => {
   const navRef = useRef(null);
 
   const playHoverSound = () => {
@@ -32,12 +32,14 @@ const Navbar = ({ isScrolled }) => {
       {/* Game Logo / Title */}
       <a href="#home" className={`flex items-center gap-2 group ${isScrolled ? 'mb-0' : 'mb-12'}`}>
         <span className="text-[#F2842F] font-mono tracking-widest text-lg">[</span>
-        {/* Logo text turns white when scrolled, black at the top */}
-        <span className={`font-extrabold tracking-wider uppercase text-2xl group-hover:text-[#F2842F] transition-colors ${
-          isScrolled ? 'text-white' : 'text-black'
+        
+        {/* Logo text turns white on dark backgrounds, black on light backgrounds */}
+        <span className={`font-extrabold tracking-wider uppercase text-2xl group-hover:text-[#F2842F] transition-colors duration-500 ${
+          isDarkBg ? 'text-white' : 'text-black'
         }`}>
           jedel.exe
         </span>
+        
         <span className="text-[#F2842F] font-mono tracking-widest text-lg">]</span>
       </a>
 
@@ -57,9 +59,9 @@ const Navbar = ({ isScrolled }) => {
                 {isScrolled ? '.' : '>'}
               </span>
               
-              {/* Link text turns white when scrolled, dark gray at the top */}
-              <span className={`transition-colors group-hover:text-[#F2842F] ${
-                isScrolled ? 'text-white' : 'text-gray-700'
+              {/* Link text turns white on dark backgrounds, dark gray on light backgrounds */}
+              <span className={`transition-colors duration-500 group-hover:text-[#F2842F] ${
+                isDarkBg ? 'text-white' : 'text-gray-900'
               }`}>
                 {link.title}
               </span>

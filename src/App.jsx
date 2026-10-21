@@ -12,8 +12,13 @@ const App = () => {
   const introRef = useRef(null);
   const heroRef = useRef(null);
   const aboutRef = useRef(null);
+  const skillsRef = useRef(null); // Ref for the new skills section animation
   const bgOverlayRef = useRef(null); 
   
+  // Hacker Glitch Text State
+  const [displayText, setDisplayText] = useState('j3d3l.3x3');
+  const [isStabilized, setIsStabilized] = useState(false);
+
   // 1. Array ref to store the text lines
   const bgLinesRef = useRef([]);
 
@@ -24,7 +29,35 @@ const App = () => {
     }
   };
 
-  
+  //  Glitch & Text Scramble Effect during Preloader
+  useEffect(() => {
+    const targetText = 'jedel.';
+    const chars = 'FAITHHIJKLMFAITHVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*-_<>[]/\\';
+    let iteration = 0;
+
+    const interval = setInterval(() => {
+      setDisplayText(
+        targetText
+          .split('')
+          .map((letter, index) => {
+            if (index < iteration) {
+              return targetText[index];
+            }
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join('')
+      );
+
+      if (iteration >= targetText.length) {
+        setIsStabilized(true); // Locks into the clean final font style
+        clearInterval(interval);
+      }
+
+      iteration += 1 / 3; // Speed of the text decoding resolution
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
@@ -38,10 +71,18 @@ const App = () => {
 
     tl.fromTo(
       introRef.current,
-      { opacity: 0, scale: 0.9 },
-      { opacity: 1, scale: 1, duration: 1.2, ease: 'power3.out' }
-    )
-    .to(introRef.current, { opacity: 1, duration: 0.6 })
+      { opacity: 0, 
+        scale: 0.9 
+      },
+      { opacity: 1, 
+        scale: 1, 
+        duration: 1.2, 
+        ease: 'power3.out' 
+      })
+    .to(introRef.current, { 
+      opacity: 1,
+      duration: 0.8 
+      }) 
     .to(introRef.current, {
       opacity: 0,
       scale: 1.1,
@@ -67,7 +108,7 @@ const App = () => {
         trigger: aboutRef.current,
         start: 'top 90%', 
         end: 'top 10%',   
-        scrub: 1.2,           
+        scrub: 1.2,         
       },
     });
 
@@ -82,7 +123,7 @@ const App = () => {
         x: 0, 
         duration: 1.4,
         ease: 'power3.out',
-        stagger: 0.25, // Staggers line by line sequentially
+        stagger: 0.25, 
         delay: 0.7,
       }
     );
@@ -120,18 +161,38 @@ const App = () => {
         },
       }
     );
+
+    // --- NEW SKILLS SECTION SCROLLTRIGGER ANIMATION ---
+    gsap.fromTo(
+      skillsRef.current,
+      { opacity: 0, y: 60, scale: 0.95 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: skillsRef.current,
+          start: 'top 85%',
+          toggleActions: 'play reverse play reverse',
+        },
+      }
+    );
   }, [isLoaded]);
 
   return (
     <>
-      {/* preloader */}
+      {/* Hacker Glitch Preloader */}
       {!isLoaded && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[black]">
           <h1 
             ref={introRef}
-            className="text-white font-extrabold tracking-wider text-5xl md:text-5xl font-mono !text-white"          
+            className={`font-extrabold tracking-wider text-5xl md:text-6xl font-mono transition-all duration-100 ${
+              isStabilized ? 'text-white' : 'text-neon-blue animate-pulse'
+            }`}         
           >
-            jedel<span className="text-neon-blue">.</span>
+            {displayText}
           </h1>
         </div>
       )}
@@ -179,10 +240,8 @@ const App = () => {
 
       {/* About Section */}
       <section id="about" ref={aboutRef} className="relative z-10 min-h-screen flex items-center px-8 md:px-16 text-[#FBFBFB] py-20">
-        {/* Changed max-w-6xl to max-w-7xl to give it more breathing room */}
         <div className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
           
-          {/* Left Column: Text Content (Takes up 7 out of 12 columns ≈ 58%) */}
           <div className="text-left space-y-6 md:col-span-7 pl-4 md:pl-8">
             <h2 className="text-4xl md:text-5xl font-extrabold text-neon-blue tracking-wide">
               Hi! I’m Jenn (aka Jedel)!
@@ -201,7 +260,6 @@ const App = () => {
             </p>
           </div>
 
-          {/* Right Column: Profile Image (Takes up 5 out of 12 columns ≈ 42%) */}
           <div className="flex justify-end items-center w-full h-full pr-4 md:pr-12 md:col-span-5">
             <img 
               src={`${import.meta.env.BASE_URL}me1.jpeg`} 
@@ -211,6 +269,31 @@ const App = () => {
           </div>
         </div>
       </section>
+
+      {/* Skills Section with Terminal/Glitch ScrollTrigger */}
+      <section id="skills" className="relative z-10 min-h-screen flex items-center px-8 md:px-16 text-[#FBFBFB] py-20">
+        <div ref={skillsRef} className="w-full max-w-7xl mx-auto text-left space-y-8 pl-4 md:pl-8">
+          <h2 className="text-4xl md:text-6xl font-black uppercase text-white tracking-wider flex items-center gap-3">
+            Skills<span className="text-neon-blue">.</span>
+          </h2>
+          <div className="w-full h-[2px] bg-white/20"></div>
+          
+          <div className="space-y-6 max-w-4xl font-mono">
+            <div className="p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
+              <p className="text-lg md:text-xl text-white/90 leading-relaxed">
+                <span className="font-bold text-neon-blue">&gt; Hard_Skills:</span> Canva, Figma, Adobe Premiere Pro, COBOL, C, Java, SQL, Python, React, TailWind CSS, GSAP
+              </p>
+            </div>
+            
+            <div className="p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
+              <p className="text-lg md:text-xl text-white/90 leading-relaxed">
+                <span className="font-bold text-neon-blue">&gt; Soft_Skills:</span> Attention to Detail, Creativity, Critical Thinking, Team Collaboration, Problem Analysis, Time Management, Organizational Skills
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       </main>
     </>
   );

@@ -7,7 +7,7 @@ const Navbar = ({ isScrolled }) => {
 
   const playHoverSound = () => {
     const audio = new Audio(`${import.meta.env.BASE_URL}select.m4a`);
-    audio.volume = 0.2;
+    audio.volume = 0.1;
     audio.currentTime = 0;
     audio.play().catch(() => {});
   };
@@ -26,7 +26,7 @@ const Navbar = ({ isScrolled }) => {
       className={`fixed z-50 transition-all duration-700 ease-in-out flex ${
         isScrolled 
           ? 'top-0 left-0 w-full h-20 flex-row items-center justify-between px-12 bg-transparent' 
-          : 'top-10 left-10 h-auto w-72 flex-col py-12 px-8 bg-transparent'
+          : 'top-10 left-10 h-auto w-60 flex-col py-12 px-8 bg-transparent'
       }`}
     >
       {/* Game Logo / Title */}

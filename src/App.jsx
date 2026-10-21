@@ -13,6 +13,7 @@ const App = () => {
   const heroRef = useRef(null);
   const aboutRef = useRef(null);
   const skillsRef = useRef(null); // Ref for the new skills section animation
+  const experienceRef = useRef(null);
   const bgOverlayRef = useRef(null); 
   
   // Hacker Glitch Text State
@@ -32,7 +33,7 @@ const App = () => {
   //  Glitch & Text Scramble Effect during Preloader
   useEffect(() => {
     const targetText = 'jedel.';
-    const chars = 'FAITHHIJKLMFAITHVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*-_<>[]/\\';
+    const chars = 'FAITHHIJKLMFAITHVWHOLLYcdefghijklmnopqrstuvwxyz0123456789@#$%&*-_<>[]/\\';
     let iteration = 0;
 
     const interval = setInterval(() => {
@@ -165,13 +166,17 @@ const App = () => {
     // --- NEW SKILLS SECTION SCROLLTRIGGER ANIMATION ---
     gsap.fromTo(
       skillsRef.current,
-      { opacity: 0, y: 60, scale: 0.95 },
+      { opacity: 0, 
+        y: 60, 
+        scale: 0.95 
+      },
       {
         opacity: 1,
         y: 0,
         scale: 1,
         duration: 1.2,
         ease: 'power3.out',
+        stagger: 0.2,
         scrollTrigger: {
           trigger: skillsRef.current,
           start: 'top 85%',
@@ -179,6 +184,27 @@ const App = () => {
         },
       }
     );
+    // --- EXPERIENCE SECTION SCROLLTRIGGER ---
+    if (experienceRef.current) {
+      gsap.fromTo(
+        experienceRef.current.children,
+        { opacity: 0, 
+          y: 40 
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.2, // Cascades the animation across the header, line, and cards
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: experienceRef.current,
+            start: 'top 85%',
+            toggleActions: 'play reverse play reverse',
+          },
+        }
+      );
+    }
   }, [isLoaded]);
 
   return (
@@ -270,7 +296,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* Skills Section with Terminal/Glitch ScrollTrigger */}
+      {/* --- SKILLS SECTION --- */}
       <section id="skills" className="relative z-10 min-h-screen flex items-center px-8 md:px-16 text-[#FBFBFB] py-20">
         <div ref={skillsRef} className="w-full max-w-7xl mx-auto text-left space-y-8 pl-4 md:pl-8">
           <h2 className="text-4xl md:text-6xl font-black uppercase text-white tracking-wider flex items-center gap-3">
@@ -281,7 +307,7 @@ const App = () => {
           <div className="space-y-6 max-w-4xl font-mono">
             <div className="p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
               <p className="text-lg md:text-xl text-white/90 leading-relaxed">
-                <span className="font-bold text-neon-blue">&gt; Hard_Skills:</span> Canva, Figma, Adobe Premiere Pro, COBOL, C, Java, SQL, Python, React, TailWind CSS, GSAP
+                <span className="font-bold text-neon-blue">&gt; Hard_Skills:</span> Canva, Figma, Adobe Premiere Pro, COBOL, C, Java, SQL, Python, React, TailWind CSS, GSAP, GitHub
               </p>
             </div>
             
@@ -294,9 +320,119 @@ const App = () => {
         </div>
       </section>
 
-      </main>
-    </>
-  );
-};
+
+      {/* --- EXPERIENCE SECTION --- */}
+      <section id="experience" className="relative z-10 min-h-screen flex items-center px-8 md:px-16 text-[#FBFBFB] py-20">
+        <div ref={experienceRef} className="w-full max-w-7xl mx-auto text-left space-y-8 pl-4 md:pl-8">
+          
+          <h2 className="text-4xl md:text-6xl font-black uppercase text-white tracking-wider flex items-center gap-3">
+            Experiences<span className="text-neon-blue">.</span>
+          </h2>
+          <div className="w-full h-[2px] bg-white/20"></div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl font-mono">
+            <div className="experience-card p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-neon-blue mb-1">Operations Associate</h3>
+              <h4 className="text-lg text-white/90 mb-3">Google Developer Groups on Campus - PUP</h4>
+              <p className="text-base text-white/70 leading-relaxed">Documented community events and software tutorials while managing event logistics to ensure seamless team access to critical materials.
+              </p>
+              {/* Year & Tech Stack Container */}
+              <div className="flex flex-col gap-3 mt-auto">
+                <div className="flex">
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">
+                    Nov 2024 - Oct 2025
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="experience-card p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-neon-blue mb-1">Operations Documentation Head</h3>
+              <h4 className="text-lg text-white/90 mb-3">Kalikasan Kilos Kabataan - NSTP</h4>
+              <p className="text-base text-white/70 leading-relaxed">Organized key social media assets to boost communications and directed the documentation team for the main NSTP event.
+              </p>
+              {/* Year & Tech Stack Container */}
+              <div className="flex flex-col gap-3 mt-auto">
+                <div className="flex">
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">
+                    Dec 2024 - Jun 2025
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="experience-card p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-neon-blue mb-1">Programming Cadet</h3>
+              <h4 className="text-lg text-white/90 mb-3">Cisco NetConnect PUP - Manila</h4>
+              <p className="text-base text-white/70 leading-relaxed">Continuous learner across diverse tech stacks and methodologies, building practical software solutions and providing cross-project technical support.
+              </p>
+              {/* Year & Tech Stack Container */}
+              <div className="flex flex-col gap-3 mt-auto">
+                <div className="flex">
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">
+                    Nov 2025 - Mar 2026
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="experience-card p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-neon-blue mb-1">UI/UX Cadet</h3>
+              <h4 className="text-lg text-white/90 mb-3">Google Developer Groups on Campus - PUP</h4>
+              <p className="text-base text-white/70 leading-relaxed">Applied UI/UX best practices learned through technical coursework to design and iterate on interactive projects in Figma.
+              </p>
+              {/* Year & Tech Stack Container */}
+              <div className="flex flex-col gap-3 mt-auto">
+                <div className="flex">
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">
+                    Nov 2025 - Jun 2026
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  <span className="px-3 py-1 text-xs font-medium bg-neon-blue/10 text-neon-blue border border-neon-blue/30 rounded-md">
+                    Figma
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="experience-card p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-neon-blue mb-1">Front-End Developer</h3>
+              <h4 className="text-lg text-white/90 mb-3">Information Management Course Project</h4>
+              <p className="text-base text-white/70 leading-relaxed">Developed the front-end for a co-working space booking system, collaborating with cross-functional roles to design, deploy, and present the final application.
+              </p>
+              {/* Year & Tech Stack Container */}
+              <div className="flex flex-col gap-3 mt-auto">
+                <div className="flex">
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">
+                    Feb 2026 - Jun 2026
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  <span className="px-3 py-1 text-xs font-medium bg-yellow/10 text-yellow border border-yellow/30 rounded-md">
+                    HTML
+                  </span>
+                  <span className="px-3 py-1 text-xs font-medium bg-green/10 text-green border border-green/30 rounded-md">
+                    CSS
+                  </span>
+                  <span className="px-3 py-1 text-xs font-medium bg-pink/10 text-pink border border-pink/30 rounded-md">
+                    JS
+                  </span>
+                  <span className="px-3 py-1 text-xs font-medium bg-light-orange/10 text-light-orange border border-light-orange/30 rounded-md">
+                    Gemini
+                  </span>
+                  <span className="px-3 py-1 text-xs font-medium bg-neon-blue/10 text-neon-blue border border-neon-blue/30 rounded-md">
+                    GitHub
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+            </main>
+          </>
+        );
+      };
 
 export default App;

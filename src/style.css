@@ -10,6 +10,8 @@
   --color-pink: #FA4EAB;
   --color-light-orange: #DE7D48;
   --color-neon-blue: #865DFF;
+  --color-yellow: #FFCF00;
+  --color-green: #08CB00;
 }
 
 @utility flex-center {

@@ -12,6 +12,8 @@
   --color-neon-blue: #865DFF;
   --color-yellow: #FFCF00;
   --color-green: #08CB00;
+  --color-dark-pink: #CF0F47;
+  --color-light-pink: #FFCED8;
 }
 
 @utility flex-center {

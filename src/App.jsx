@@ -15,20 +15,18 @@ const App = () => {
   const aboutRef = useRef(null);
   const skillsRef = useRef(null); 
   const experienceRef = useRef(null);
-  const certificationsRef = useRef(null); // Added ref for Certifications
+  const certificationsRef = useRef(null); 
   const bgOverlayRef = useRef(null); 
   const [displayText, setDisplayText] = useState('j3d3l.3x3');
   const [isStabilized, setIsStabilized] = useState(false);
   const bgLinesRef = useRef([]);
 
-  // 2. Helper function
   const addToBgLines = (el) => {
     if (el && !bgLinesRef.current.includes(el)) {
       bgLinesRef.current.push(el);
     }
   };
 
-  //  Glitch & Text Scramble Effect during Preloader
   useEffect(() => {
     const targetText = 'jedel.';
     const chars = 'FAITHHIJKLMFAITHVWHOLLYcdefghijklmnopqrstuvwxyz0123456789@#$%&*-_<>[]/\\';
@@ -48,11 +46,11 @@ const App = () => {
       );
 
       if (iteration >= targetText.length) {
-        setIsStabilized(true); // Locks into the clean final font style
+        setIsStabilized(true); 
         clearInterval(interval);
       }
 
-      iteration += 1 / 3; // Speed of the text decoding resolution
+      iteration += 1 / 3; 
     }, 50);
 
     return () => clearInterval(interval);
@@ -65,7 +63,6 @@ const App = () => {
       behavior: 'instant' 
     });
 
-    // Cinematic Intro Timeline
     const tl = gsap.timeline({
       onComplete: () => {
         setIsLoaded(true);
@@ -74,49 +71,33 @@ const App = () => {
 
     tl.fromTo(
       introRef.current,
-      { opacity: 0, 
-        scale: 0.9 
-      },
-      { opacity: 1, 
-        scale: 1, 
-        duration: 1.2, 
-        ease: 'power3.out' 
-      }
+      { opacity: 0, scale: 0.9 },
+      { opacity: 1, scale: 1, duration: 1.2, ease: 'power3.out' }
     )
-    .to(introRef.current, { 
-      opacity: 1, 
-      duration: 0.8 
-    }) 
-    .to(introRef.current, { 
-      opacity: 0, 
-      scale: 1.1, 
-      duration: 1, 
-      ease: 'power3.in' 
-    });
+    .to(introRef.current, { opacity: 1, duration: 0.8 }) 
+    .to(introRef.current, { opacity: 0, scale: 1.1, duration: 1, ease: 'power3.in' });
   }, []);
       
   useEffect(() => {
     if (!isLoaded) return;
 
-  // Trigger 1: Dark background active across About, Skills, and Experience
-  ScrollTrigger.create({
-    trigger: aboutRef.current,
-    start: 'top center',
-    endTrigger: experienceRef.current,
-    end: 'bottom center',
-    onEnter: () => {
-      setIsScrolled(true);
-      setIsDarkBg(true);
-    },
-    onLeaveBack: () => {
-      setIsScrolled(false);
-      setIsDarkBg(false);
-    },
-    onLeave: () => setIsDarkBg(false),       // Turns navbar dark when entering Certifications
-    onEnterBack: () => setIsDarkBg(true),   // Turns navbar white when scrolling back up to Experience
-  });
+    ScrollTrigger.create({
+      trigger: aboutRef.current,
+      start: 'top center',
+      endTrigger: experienceRef.current,
+      end: 'bottom center',
+      onEnter: () => {
+        setIsScrolled(true);
+        setIsDarkBg(true);
+      },
+      onLeaveBack: () => {
+        setIsScrolled(false);
+        setIsDarkBg(false);
+      },
+      onLeave: () => setIsDarkBg(false),       
+      onEnterBack: () => setIsDarkBg(true),   
+    });
 
-    // 1. Smoothly fade IN the solid dark background (White to Black)
     gsap.to(bgOverlayRef.current, {
       opacity: 1,
       scrollTrigger: {
@@ -127,15 +108,12 @@ const App = () => {
       },
     });
 
-    // 2. Smoothly fade OUT the solid dark background (Black to White) for Certifications
     gsap.fromTo(
       bgOverlayRef.current,
-      { 
-        opacity: 1 
-      },
+      { opacity: 1 },
       {
         opacity: 0,
-        immediateRender: false, // CRITICAL: Keeps opacity at 0 on initial page load
+        immediateRender: false, 
         scrollTrigger: {
           trigger: certificationsRef.current,
           start: 'top 90%', 
@@ -163,7 +141,6 @@ const App = () => {
       { opacity: 1, y: 0, duration: 1.5, ease: 'power3.out', scrollTrigger: { trigger: aboutRef.current, start: 'top 85%', toggleActions: 'play none none none' } }
     );
 
-    // --- SKILLS SECTION SCROLLTRIGGER ANIMATION ---
     gsap.fromTo(
       skillsRef.current,
       { opacity: 0, y: 60, scale: 0.95 },
@@ -176,7 +153,6 @@ const App = () => {
       const divider = experienceRef.current.children[1];
       const cards = gsap.utils.toArray(experienceRef.current.querySelectorAll('.experience-card'));
 
-      // 1. Animate Header and Divider when the section starts
       gsap.fromTo(
         [header, divider],
         { opacity: 0, y: 40 },
@@ -194,7 +170,6 @@ const App = () => {
         }
       );
 
-      // 2. Animate each card individually exactly when IT enters the viewport
       cards.forEach((card) => {
         gsap.fromTo(
           card,
@@ -220,10 +195,12 @@ const App = () => {
       const certDivider = certificationsRef.current.children[1];
       const certCards = gsap.utils.toArray(certificationsRef.current.querySelectorAll('.cert-card'));
 
-      // 1. Animate Header and Divider
+      // 1. Animate Header and Divider when the section starts
       gsap.fromTo(
         [certHeader, certDivider],
-        { opacity: 0, y: 40 },
+        { opacity: 0, 
+          y: 40 
+        },
         {
           opacity: 1,
           y: 0,
@@ -238,15 +215,17 @@ const App = () => {
         }
       );
 
-      // 2. Animate each cert card individually
+      // 2. Animate each card individually exactly when IT enters the viewport
       certCards.forEach((card) => {
         gsap.fromTo(
           card,
-          { opacity: 0, y: 50 },
+          { opacity: 0, 
+            y: 50 
+          },
           {
             opacity: 1,
             y: 0,
-            duration: 0.4,
+            duration: 1,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: card,
@@ -323,7 +302,7 @@ const App = () => {
             </p>
 
             <p className="text-base md:text-lg text-white/70 leading-relaxed">
-              Currently, I’m diving deep into the world of front-end development, blending logic with design to build clean, intuitive user experiences.
+            Passionate front-end developer bridging the gap between logic and design to create sleek, easy-to-use digital experiences.
             </p>
 
             <p className="text-base md:text-lg text-white/70 leading-relaxed">
@@ -481,30 +460,129 @@ const App = () => {
           <div className="w-full h-[2px] bg-black/20"></div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl font-mono">
-            {/* Cert Card 1 */}
+
             <div className="cert-card flex flex-col p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
-              <h3 className="text-xl font-bold text-neon-blue mb-1">AWS Certified Cloud Practitioner</h3>
-              <h4 className="text-lg text-gray-800 mb-3">Amazon Web Services</h4>
-              <p className="text-base text-gray-700 leading-relaxed">Demonstrated foundational knowledge of IT services and their implementation in the AWS Cloud.</p>
+              <h3 className="text-xl font-bold text-neon-blue mb-1">From Ideas to Investment: VC Webinar for Startups</h3>
+              <h4 className="text-lg text-gray-800 mb-3 mt-2">Department of Information and Communications Technology</h4>
+              <p className="text-base text-gray-700 leading-relaxed">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem, officiis a ullam veniam et quis laborum fuga reprehenderit odit ipsa, modi aspernatur consequuntur quam incidunt illo cumque officia quaerat eveniet!</p>
               <div className="flex flex-col gap-3 mt-auto">
-                <div className="flex">
-                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-black/10 text-gray-800 border border-black/20 rounded-md">
-                    Issued: Aug 2026
+                <div className="flex flex-wrap gap-2 mt-1">
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
+                    Issued: Mar 2026
                   </span>
+                  <a 
+                    href="https://drive.google.com/file/d/1aWdQfD3hPc30NzZYbt_1E2aGEb_f8rLd/view" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
+                  >
+                    Show Credential
+                  </a>
+                </div>
+              </div>
+            </div>
+            
+            <div className="cert-card flex flex-col p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-neon-blue mb-1">Data to Insights: Introduction to Business Intelligence with Power BI</h3>
+              <h4 className="text-lg text-gray-800 mb-3 mt-2">Department of Information and Communications Technology</h4>
+              <p className="text-base text-gray-700 leading-relaxed">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis ad reiciendis similique quibusdam rerum corrupti alias nostrum, dolor beatae mollitia. Laudantium possimus ipsum voluptas id alias dolorum ipsam eaque sit?</p>
+              <div className="flex flex-col gap-3 mt-auto">
+                <div className="flex flex-wrap gap-2 mt-1">
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
+                    Issued: Feb 2026
+                  </span>
+                  <a 
+                    href="https://sites.google.com/dict.gov.ph/ilcd-r9basulta/2026/february/26sul-dwi02-022716?pli=1&authuser=0" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
+                  >
+                    Show Credential
+                  </a>
                 </div>
               </div>
             </div>
 
-            {/* Cert Card 2 */}
             <div className="cert-card flex flex-col p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
-              <h3 className="text-xl font-bold text-neon-blue mb-1">Google UX Design Certificate</h3>
-              <h4 className="text-lg text-gray-800 mb-3">Coursera</h4>
-              <p className="text-base text-gray-700 leading-relaxed">Completed rigorous training in UX research, wireframing, and interactive prototyping.</p>
+              <h3 className="text-xl font-bold text-neon-blue mb-1">Java Fundamentals</h3>
+              <h4 className="text-lg text-gray-800 mb-3 mt-2">DataCamp</h4>
+              <p className="text-base text-gray-700 leading-relaxed">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis tempore dolores ad expedita excepturi reprehenderit voluptatibus animi necessitatibus quis corrupti provident eos illum, neque sint consectetur sed quibusdam veniam adipisci!</p>
               <div className="flex flex-col gap-3 mt-auto">
-                <div className="flex">
-                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-black/10 text-gray-800 border border-black/20 rounded-md">
+                <div className="flex flex-wrap gap-2 mt-1">
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
+                    Issued: Jan 2026
+                  </span>
+                  <a 
+                    href="https://www.datacamp.com/completed/statement-of-accomplishment/track/81389061fd2afec4db7a62f8325fbf7a04e9e873" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
+                  >
+                    Show Credential
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="cert-card flex flex-col p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-neon-blue mb-1">Intermediate Java</h3>
+              <h4 className="text-lg text-gray-800 mb-3 mt-2">DataCamp</h4>
+              <p className="text-base text-gray-700 leading-relaxed">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis tempore dolores ad expedita excepturi reprehenderit voluptatibus animi necessitatibus quis corrupti provident eos illum, neque sint consectetur sed quibusdam veniam adipisci!</p>
+              <div className="flex flex-wrap gap-2 mt-1">
+                <div className="flex flex-wrap gap-2 mt-1">
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
                     Issued: Nov 2025
                   </span>
+                  <a 
+                    href="https://www.datacamp.com/completed/statement-of-accomplishment/course/1bb9372d223619574aa564bd1a9939972a989b82" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
+                  >
+                    Show Credential
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="cert-card flex flex-col p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-neon-blue mb-1">Intermediate SQL</h3>
+              <h4 className="text-lg text-gray-800 mb-3 mt-2">DataCamp</h4>
+              <p className="text-base text-gray-700 leading-relaxed">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis tempore dolores ad expedita excepturi reprehenderit voluptatibus animi necessitatibus quis corrupti provident eos illum, neque sint consectetur sed quibusdam veniam adipisci!</p>
+              <div className="flex flex-col gap-3 mt-auto">
+                <div className="flex flex-wrap gap-2 mt-1">
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
+                    Issued: Dec 2025
+                  </span>
+                  <a 
+                    href="https://www.datacamp.com/completed/statement-of-accomplishment/course/0e69c3172867a0e7d0a12bf64507489419833bde" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
+                  >
+                    Show Credential
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="cert-card flex flex-col p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-neon-blue mb-1">Introduction to UI and UX Design Course</h3>
+              <h4 className="text-lg text-gray-800 mb-3 mt-2">Codecademy</h4>
+              <p className="text-base text-gray-700 leading-relaxed">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis tempore dolores ad expedita excepturi reprehenderit voluptatibus animi necessitatibus quis corrupti provident eos illum, neque sint consectetur sed quibusdam veniam adipisci!</p>
+              <div className="flex flex-wrap gap-2 mt-1">
+                <div className="flex flex-wrap gap-2 mt-1">
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
+                    Issued: Nov 2025
+                  </span>
+                  <a 
+                    href="https://www.codecademy.com/profiles/cloud6377250821/certificates/4ccef8d532484ea2aeec3b3b3dbb4f9c" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
+                  >
+                    Show Credential
+                  </a>
                 </div>
               </div>
             </div>

@@ -155,7 +155,9 @@ const App = () => {
 
       gsap.fromTo(
         [header, divider],
-        { opacity: 0, y: 40 },
+        { opacity: 0, 
+          y: 40 
+        },
         {
           opacity: 1,
           y: 0,
@@ -173,7 +175,9 @@ const App = () => {
       cards.forEach((card) => {
         gsap.fromTo(
           card,
-          { opacity: 0, y: 50 },
+          { opacity: 0, 
+            y: 50 
+          },
           {
             opacity: 1,
             y: 0,
@@ -181,7 +185,7 @@ const App = () => {
             ease: 'power3.out',
             scrollTrigger: {
               trigger: card,
-              start: 'top 90%',
+              start: 'top 80%',
               toggleActions: 'play none play reverse',
             }
           }
@@ -220,16 +224,16 @@ const App = () => {
         gsap.fromTo(
           card,
           { opacity: 0, 
-            y: 50 
+            y: 50,
           },
           {
             opacity: 1,
             y: 0,
-            duration: 1,
+            duration: 0.4,
             ease: 'power3.out',
             scrollTrigger: {
               trigger: card,
-              start: 'top 90%',
+              start: 'top 100%',
               toggleActions: 'play none play reverse',
             }
           }
@@ -459,133 +463,183 @@ const App = () => {
           </h2>
           <div className="w-full h-[2px] bg-black/20"></div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl font-mono">
+          {/* Changed from grid-cols-2 to grid-cols-1 to force 1 card per line */}
+          <div className="grid grid-cols-1 gap-6 max-w-5xl font-mono">
 
-            <div className="cert-card flex flex-col p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
-              <h3 className="text-xl font-bold text-neon-blue mb-1">From Ideas to Investment: VC Webinar for Startups</h3>
-              <h4 className="text-lg text-gray-800 mb-3 mt-2">Department of Information and Communications Technology</h4>
-              <p className="text-base text-gray-700 leading-relaxed">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem, officiis a ullam veniam et quis laborum fuga reprehenderit odit ipsa, modi aspernatur consequuntur quam incidunt illo cumque officia quaerat eveniet!</p>
-              <div className="flex flex-col gap-3 mt-auto">
-                <div className="flex flex-wrap gap-2 mt-1">
-                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
-                    Issued: Mar 2026
-                  </span>
-                  <a 
-                    href="https://drive.google.com/file/d/1aWdQfD3hPc30NzZYbt_1E2aGEb_f8rLd/view" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
-                  >
-                    Show Credential
-                  </a>
+            <div className="cert-card flex flex-col md:flex-row p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm gap-6">
+              <div className="flex-1 flex flex-col">
+                <h3 className="text-xl font-bold text-neon-blue mb-1">From Ideas to Investment: VC Webinar for Startups</h3>
+                <h4 className="text-lg text-gray-800 mb-3 mt-2">Department of Information and Communications Technology</h4>
+                <p className="text-base text-gray-700 leading-relaxed">Gained actionable insights into venture capital (VC) funding lifecycles and the core metrics investors evaluate when assessing early-stage tech startups.</p>
+                <div className="flex flex-col gap-3 mt-auto">
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
+                      Issued: Mar 2026
+                    </span>
+                    <a 
+                      href="https://drive.google.com/file/d/1aWdQfD3hPc30NzZYbt_1E2aGEb_f8rLd/view" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
+                    >
+                      Check Credential
+                    </a>
+                  </div>
                 </div>
+              </div>
+              <div className="w-full md:w-48 lg:w-64 h-48 md:h-auto border-dashed border-black-300 rounded-lg flex items-center justify-center shrink-0">
+                <img 
+                  src={`${import.meta.env.BASE_URL}01.png`} 
+                  alt="certificate"
+                />
               </div>
             </div>
             
-            <div className="cert-card flex flex-col p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
-              <h3 className="text-xl font-bold text-neon-blue mb-1">Data to Insights: Introduction to Business Intelligence with Power BI</h3>
-              <h4 className="text-lg text-gray-800 mb-3 mt-2">Department of Information and Communications Technology</h4>
-              <p className="text-base text-gray-700 leading-relaxed">Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis ad reiciendis similique quibusdam rerum corrupti alias nostrum, dolor beatae mollitia. Laudantium possimus ipsum voluptas id alias dolorum ipsam eaque sit?</p>
-              <div className="flex flex-col gap-3 mt-auto">
-                <div className="flex flex-wrap gap-2 mt-1">
-                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
-                    Issued: Feb 2026
-                  </span>
-                  <a 
-                    href="https://sites.google.com/dict.gov.ph/ilcd-r9basulta/2026/february/26sul-dwi02-022716?pli=1&authuser=0" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
-                  >
-                    Show Credential
-                  </a>
+            <div className="cert-card flex flex-col md:flex-row p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm gap-6">
+              <div className="flex-1 flex flex-col">
+                <h3 className="text-xl font-bold text-neon-blue mb-1">Data to Insights: Introduction to Business Intelligence with Power BI</h3>
+                <h4 className="text-lg text-gray-800 mb-3 mt-2">Department of Information and Communications Technology</h4>
+                <p className="text-base text-gray-700 leading-relaxed">Completed a 4-hour technical training focused on foundational Business Intelligence concepts and data visualization using Microsoft Power BI. Learned to transform raw dataset structures into interactive dashboards and visual reports to support data-driven decision-making.</p>
+                <div className="flex flex-col gap-3 mt-auto">
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
+                      Issued: Feb 2026
+                    </span>
+                    <a 
+                      href="https://sites.google.com/dict.gov.ph/ilcd-r9basulta/2026/february/26sul-dwi02-022716?pli=1&authuser=0" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
+                    >
+                      Check Credential
+                    </a>
+                  </div>
                 </div>
+              </div>
+              <div className="w-full md:w-48 lg:w-64 h-48 md:h-auto border-dashed border-black-300 rounded-lg flex items-center justify-center shrink-0">
+                <img 
+                  src={`${import.meta.env.BASE_URL}02.jpg`} 
+                  alt="certificate"
+                />
               </div>
             </div>
 
-            <div className="cert-card flex flex-col p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
-              <h3 className="text-xl font-bold text-neon-blue mb-1">Java Fundamentals</h3>
-              <h4 className="text-lg text-gray-800 mb-3 mt-2">DataCamp</h4>
-              <p className="text-base text-gray-700 leading-relaxed">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis tempore dolores ad expedita excepturi reprehenderit voluptatibus animi necessitatibus quis corrupti provident eos illum, neque sint consectetur sed quibusdam veniam adipisci!</p>
-              <div className="flex flex-col gap-3 mt-auto">
-                <div className="flex flex-wrap gap-2 mt-1">
-                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
-                    Issued: Jan 2026
-                  </span>
-                  <a 
-                    href="https://www.datacamp.com/completed/statement-of-accomplishment/track/81389061fd2afec4db7a62f8325fbf7a04e9e873" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
-                  >
-                    Show Credential
-                  </a>
+            <div className="cert-card flex flex-col md:flex-row p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm gap-6">
+              <div className="flex-1 flex flex-col">
+                <h3 className="text-xl font-bold text-neon-blue mb-1">Java Fundamentals</h3>
+                <h4 className="text-lg text-gray-800 mb-3 mt-2">DataCamp</h4>
+                <p className="text-base text-gray-700 leading-relaxed">Completed a comprehensive 20-hour skill track focused on foundational Java programming and core software development concepts. Developed core logic and algorithmic thinking by mastering control flow structures, loops, method declarations, and array manipulations.</p>
+                <div className="flex flex-col gap-3 mt-auto">
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
+                      Issued: Jan 2026
+                    </span>
+                    <a 
+                      href="https://www.datacamp.com/completed/statement-of-accomplishment/track/81389061fd2afec4db7a62f8325fbf7a04e9e873" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
+                    >
+                      Check Credential
+                    </a>
+                  </div>
                 </div>
+              </div>
+              <div className="w-full md:w-48 lg:w-64 h-48 md:h-auto border-dashed border-black-300 rounded-lg flex items-center justify-center shrink-0">
+                <img 
+                  src={`${import.meta.env.BASE_URL}03.png`} 
+                  alt="certificate"
+                />
               </div>
             </div>
 
-            <div className="cert-card flex flex-col p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
-              <h3 className="text-xl font-bold text-neon-blue mb-1">Intermediate Java</h3>
-              <h4 className="text-lg text-gray-800 mb-3 mt-2">DataCamp</h4>
-              <p className="text-base text-gray-700 leading-relaxed">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis tempore dolores ad expedita excepturi reprehenderit voluptatibus animi necessitatibus quis corrupti provident eos illum, neque sint consectetur sed quibusdam veniam adipisci!</p>
-              <div className="flex flex-wrap gap-2 mt-1">
-                <div className="flex flex-wrap gap-2 mt-1">
-                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
-                    Issued: Nov 2025
-                  </span>
-                  <a 
-                    href="https://www.datacamp.com/completed/statement-of-accomplishment/course/1bb9372d223619574aa564bd1a9939972a989b82" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
-                  >
-                    Show Credential
-                  </a>
+            <div className="cert-card flex flex-col md:flex-row p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm gap-6">
+              <div className="flex-1 flex flex-col">
+                <h3 className="text-xl font-bold text-neon-blue mb-1">Intermediate Java</h3>
+                <h4 className="text-lg text-gray-800 mb-3 mt-2">DataCamp</h4>
+                <p className="text-base text-gray-700 leading-relaxed">Completed a 4-hour course focused on deepening core Object-Oriented Programming (OOP) concepts in Java. Learned key software design principles, including inheritance, polymorphism, abstract classes, and interfaces to build modular application structures.</p>
+                <div className="flex flex-col gap-3 mt-auto">
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
+                      Issued: Nov 2025
+                    </span>
+                    <a 
+                      href="https://www.datacamp.com/completed/statement-of-accomplishment/course/1bb9372d223619574aa564bd1a9939972a989b82" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
+                    >
+                      Check Credential
+                    </a>
+                  </div>
                 </div>
+              </div>
+              <div className="w-full md:w-48 lg:w-64 h-48 md:h-auto border-dashed border-black-300 rounded-lg flex items-center justify-center shrink-0">
+                <img 
+                  src={`${import.meta.env.BASE_URL}06.png`} 
+                  alt="certificate"
+                />
               </div>
             </div>
 
-            <div className="cert-card flex flex-col p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
-              <h3 className="text-xl font-bold text-neon-blue mb-1">Intermediate SQL</h3>
-              <h4 className="text-lg text-gray-800 mb-3 mt-2">DataCamp</h4>
-              <p className="text-base text-gray-700 leading-relaxed">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis tempore dolores ad expedita excepturi reprehenderit voluptatibus animi necessitatibus quis corrupti provident eos illum, neque sint consectetur sed quibusdam veniam adipisci!</p>
-              <div className="flex flex-col gap-3 mt-auto">
-                <div className="flex flex-wrap gap-2 mt-1">
-                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
-                    Issued: Dec 2025
-                  </span>
-                  <a 
-                    href="https://www.datacamp.com/completed/statement-of-accomplishment/course/0e69c3172867a0e7d0a12bf64507489419833bde" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
-                  >
-                    Show Credential
-                  </a>
+            <div className="cert-card flex flex-col md:flex-row p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm gap-6">
+              <div className="flex-1 flex flex-col">
+                <h3 className="text-xl font-bold text-neon-blue mb-1">Intermediate SQL</h3>
+                <h4 className="text-lg text-gray-800 mb-3 mt-2">DataCamp</h4>
+                <p className="text-base text-gray-700 leading-relaxed">Completed a 4-hour hands-on course focusing on advanced relational database querying and data filtering techniques. Learned multi-table joins (INNER, LEFT, RIGHT, FULL), set operations, and relational data querying across complex database structures.</p>
+                <div className="flex flex-col gap-3 mt-auto">
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
+                      Issued: Dec 2025
+                    </span>
+                    <a 
+                      href="https://www.datacamp.com/completed/statement-of-accomplishment/course/0e69c3172867a0e7d0a12bf64507489419833bde" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
+                    >
+                      Check Credential
+                    </a>
+                  </div>
                 </div>
+              </div>
+              <div className="w-full md:w-48 lg:w-64 h-48 md:h-auto border-dashed border-black-300 rounded-lg flex items-center justify-center shrink-0">
+                <img 
+                  src={`${import.meta.env.BASE_URL}04.png`} 
+                  alt="certificate"
+                />
               </div>
             </div>
 
-            <div className="cert-card flex flex-col p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
-              <h3 className="text-xl font-bold text-neon-blue mb-1">Introduction to UI and UX Design Course</h3>
-              <h4 className="text-lg text-gray-800 mb-3 mt-2">Codecademy</h4>
-              <p className="text-base text-gray-700 leading-relaxed">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis tempore dolores ad expedita excepturi reprehenderit voluptatibus animi necessitatibus quis corrupti provident eos illum, neque sint consectetur sed quibusdam veniam adipisci!</p>
-              <div className="flex flex-wrap gap-2 mt-1">
-                <div className="flex flex-wrap gap-2 mt-1">
-                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
-                    Issued: Nov 2025
-                  </span>
-                  <a 
-                    href="https://www.codecademy.com/profiles/cloud6377250821/certificates/4ccef8d532484ea2aeec3b3b3dbb4f9c" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
-                  >
-                    Show Credential
-                  </a>
+            <div className="cert-card flex flex-col md:flex-row p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm gap-6">
+              <div className="flex-1 flex flex-col">
+                <h3 className="text-xl font-bold text-neon-blue mb-1">Introduction to UI and UX Design Course</h3>
+                <h4 className="text-lg text-gray-800 mb-3 mt-2">Codecademy</h4>
+                <p className="text-base text-gray-700 leading-relaxed">Mastered foundational User Interface (UI) and User Experience (UX) design concepts, user research methodologies, and wireframing techniques. Practiced designing user-centered digital interfaces focusing on usability, visual hierarchy, information architecture, and accessibility standards.</p>
+                <div className="flex flex-col gap-3 mt-auto">
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
+                      Issued: Nov 2025
+                    </span>
+                    <a 
+                      href="https://www.codecademy.com/profiles/cloud6377250821/certificates/4ccef8d532484ea2aeec3b3b3dbb4f9c" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
+                    >
+                      Check Credential
+                    </a>
+                  </div>
                 </div>
               </div>
+              <div className="w-full md:w-48 lg:w-64 h-48 md:h-auto border-dashed border-black-300 rounded-lg flex items-center justify-center shrink-0">
+                <img 
+                  src={`${import.meta.env.BASE_URL}05.png`} 
+                  alt="certificate"
+                />
+              </div>
             </div>
+
           </div>
         </div>
       </section>

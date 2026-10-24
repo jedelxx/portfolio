@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Jersey+20&family=Londrina+Shadow&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Tiny5&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gugi&family=Jersey+20&family=Londrina+Shadow&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Tiny5&display=swap');
 @import 'tailwindcss';
 
 @theme {
@@ -14,6 +14,12 @@
   --color-green: #08CB00;
   --color-dark-pink: #CF0F47;
   --color-light-pink: #FFCED8;
+
+  --font-jersey: "Jersey 20", sans-serif;
+  --font-londrina: "Londrina Shadow", cursive;
+  --font-montserrat: "Montserrat", sans-serif;
+  --font-tiny5: "Tiny5", sans-serif;
+  --font-gugi: "Gugi";
 }
 
 @utility flex-center {
@@ -35,4 +41,20 @@ section {
   height: 100%;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+}
+
+.cursor-color-reveal {
+  /* We use the gradient to define BOTH the hover color and the base color */
+  background-image: radial-gradient(
+    circle 250px at var(--mouse-x, -500px) var(--mouse-y, -500px),
+    #FA4EAB 0%,     /* The glow color (Neon Blue) */
+    #865DFF 100%    /* The base text color (Grey) - Replaced 'transparent' with this! */
+  );
+  
+  -webkit-background-clip: text;
+  background-clip: text;
+  
+  /* Make the font itself transparent so the background gradient shows through */
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }

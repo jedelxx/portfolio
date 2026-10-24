@@ -21,6 +21,17 @@ const App = () => {
   const [isStabilized, setIsStabilized] = useState(false);
   const bgLinesRef = useRef([]);
 
+  const handleMouseMove = (e) => {
+    if (!heroRef.current) return;
+    
+    const rect = heroRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    heroRef.current.style.setProperty('--mouse-x', `${x}px`);
+    heroRef.current.style.setProperty('--mouse-y', `${y}px`);
+  };
+  
   const addToBgLines = (el) => {
     if (el && !bgLinesRef.current.includes(el)) {
       bgLinesRef.current.push(el);
@@ -72,10 +83,10 @@ const App = () => {
     tl.fromTo(
       introRef.current,
       { opacity: 0, scale: 0.9 },
-      { opacity: 1, scale: 1, duration: 1.2, ease: 'power3.out' }
+      { opacity: 1, scale: 1, duration: 1, ease: 'power3.out' }
     )
-    .to(introRef.current, { opacity: 1, duration: 0.8 }) 
-    .to(introRef.current, { opacity: 0, scale: 1.1, duration: 1, ease: 'power3.in' });
+    .to(introRef.current, { opacity: 1, duration: 0.6 }) 
+    .to(introRef.current, { opacity: 0, scale: 1.1, duration: 0.8, ease: 'power3.in' });
   }, []);
       
   useEffect(() => {
@@ -126,7 +137,7 @@ const App = () => {
     gsap.fromTo(
       bgLinesRef.current,
       { opacity: 0, x: -100 }, 
-      { opacity: 1, x: 0, duration: 1.4, ease: 'power3.out', stagger: 0.25, delay: 0.7 }
+      { opacity: 1, x: 0, duration: 1.4, ease: 'power3.out', stagger: 0.25, delay: 0.3 }
     );
     
     gsap.fromTo(
@@ -155,9 +166,7 @@ const App = () => {
 
       gsap.fromTo(
         [header, divider],
-        { opacity: 0, 
-          y: 40 
-        },
+        { opacity: 0, y: 40 },
         {
           opacity: 1,
           y: 0,
@@ -175,9 +184,7 @@ const App = () => {
       cards.forEach((card) => {
         gsap.fromTo(
           card,
-          { opacity: 0, 
-            y: 50 
-          },
+          { opacity: 0, y: 50 },
           {
             opacity: 1,
             y: 0,
@@ -199,12 +206,9 @@ const App = () => {
       const certDivider = certificationsRef.current.children[1];
       const certCards = gsap.utils.toArray(certificationsRef.current.querySelectorAll('.cert-card'));
 
-      // 1. Animate Header and Divider when the section starts
       gsap.fromTo(
         [certHeader, certDivider],
-        { opacity: 0, 
-          y: 40 
-        },
+        { opacity: 0, y: 40 },
         {
           opacity: 1,
           y: 0,
@@ -219,13 +223,10 @@ const App = () => {
         }
       );
 
-      // 2. Animate each card individually exactly when IT enters the viewport
       certCards.forEach((card) => {
         gsap.fromTo(
           card,
-          { opacity: 0, 
-            y: 50,
-          },
+          { opacity: 0, y: 50 },
           {
             opacity: 1,
             y: 0,
@@ -269,27 +270,31 @@ const App = () => {
       />
 
       {/* Main Portfolio Content */}
-      <main className={`relative min-h-screen transition-all duration-700 z-10 ${
-        isScrolled ? 'ml-0 w-full' : 'ml-72 w-[calc(100vw-18rem)]'
+      {/* MODIFIED: Changed from 'ml-72 w-[calc...]' to 'md:ml-72 w-full md:w-[calc...]' for responsiveness */}
+      <main className={`relative min-h-screen transition-all duration-700 z-10 pt-16 md:pt-0 ${
+        isScrolled ? 'ml-0 w-full' : 'md:ml-72 w-full md:w-[calc(100vw-18rem)]'
       } ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
         
         <Navbar isScrolled={isScrolled} isDarkBg={isDarkBg} />
-        
-        {/* Hero Section */}
-        <section id="home" className="relative flex justify-center items-center min-h-screen overflow-hidden">
-          
-        {/* Big Bold Background Text - 3 Clean Lines */}
-        <h1 className="absolute z-0 top-[10%] left-[2%] text-6xl md:text-8xl lg:text-9xl font-black uppercase text-neon-blue select-none tracking-tighter text-left w-full px-8 md:px-16 max-w-7xl leading-none">
-          <span ref={addToBgLines} className="block">
-            EMPOWER
-          </span>
-          <span ref={addToBgLines} className="block">
-            GIRLS, BUILD
-          </span>
-          <span ref={addToBgLines} className="block">
-            TECHNOLOGY.
-          </span>
-        </h1>
+
+      <section 
+          id="home" 
+          ref={heroRef} 
+          onMouseMove={handleMouseMove}
+          className="relative flex justify-center items-center min-h-screen overflow-hidden"
+        >
+          {/* Changed text size to strictly use Viewport Width (vw) so it scales beautifully, and restored leading-none so it doesn't squish */}
+          <h1 className="absolute z-0 top-[20%] md:top-[22%] left-[4%] md:left-[8%] text-[14vw] md:text-[9.5vw] lg:text-[9vw] font-bold uppercase text-neon-blue select-none tracking-tighter text-left w-full px-4 md:px-8 leading-none font-gugi cursor-color-reveal whitespace-nowrap">
+            <span ref={addToBgLines} className="block">
+              EMPOWER
+            </span>
+            <span ref={addToBgLines} className="block">
+              GIRLS, BUILD
+            </span>
+            <span ref={addToBgLines} className="block">
+              TECHNOLOGY.
+            </span>
+          </h1>
         </section>
 
       {/* About Section */}
@@ -314,13 +319,23 @@ const App = () => {
             </p>
           </div>
 
-          <div className="flex justify-end items-center w-full h-full pr-4 md:pr-12 md:col-span-5">
+          <div className="relative w-full md:w-[450px] mx-auto overflow-hidden shadow-2xl">
+            {/* DESKTOP VIEW: Full portrait image */}
             <img 
               src={`${import.meta.env.BASE_URL}me1.jpeg`} 
-              alt="portrait" 
-              className="max-w-xs w-full h-auto object-cover rounded-2xl shadow-2xl border border-white/10"
+              alt="photo" 
+              className="hidden md:block w-full h-[400px] rounded-xl object-cover object-center"
             />
-          </div>
+
+            {/* MOBILE VIEW: Centered/adjusted frame focusing on your face */}
+            <div className="block md:hidden w-full h-[300px] overflow-hidden relative rounded-3xl">
+              <img 
+                src={`${import.meta.env.BASE_URL}me1.jpeg`} 
+                alt="photo" 
+                className="absolute w-[160%] max-w-none -top-4 -left-[25%] h-[120%] object-cover"
+              />
+            </div>
+          </div>       
         </div>
       </section>
 
@@ -358,16 +373,14 @@ const App = () => {
           <div className="w-full h-[2px] bg-white/20"></div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl font-mono">
+            {/* Same Experience Cards as before */}
             <div className="experience-card flex flex-col p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
               <h3 className="text-xl font-bold text-neon-blue mb-1">Operations Associate</h3>
               <h4 className="text-lg text-white/90 mb-3">Google Developer Groups on Campus - PUP</h4>
-              <p className="text-base text-white/70 leading-relaxed">Documented community events and software tutorials while managing event logistics to ensure seamless team access to critical materials.
-              </p>
+              <p className="text-base text-white/70 leading-relaxed">Documented community events and software tutorials while managing event logistics to ensure seamless team access to critical materials.</p>
               <div className="flex flex-col gap-3 mt-auto">
                 <div className="flex">
-                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">
-                    Nov 2024 - Oct 2025
-                  </span>
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">Nov 2024 - Oct 2025</span>
                 </div>
               </div>
             </div>
@@ -375,13 +388,10 @@ const App = () => {
             <div className="experience-card flex flex-col p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
               <h3 className="text-xl font-bold text-neon-blue mb-1">Operations Documentation Head</h3>
               <h4 className="text-lg text-white/90 mb-3">Kalikasan Kilos Kabataan - NSTP</h4>
-              <p className="text-base text-white/70 leading-relaxed">Organized key social media assets to boost communications and directed the documentation team for the main NSTP event.
-              </p>
+              <p className="text-base text-white/70 leading-relaxed">Organized key social media assets to boost communications and directed the documentation team for the main NSTP event.</p>
               <div className="flex flex-col gap-3 mt-auto">
                 <div className="flex">
-                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">
-                    Dec 2024 - Jun 2025
-                  </span>
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">Dec 2024 - Jun 2025</span>
                 </div>
               </div>
             </div>
@@ -389,13 +399,10 @@ const App = () => {
             <div className="experience-card flex flex-col p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
               <h3 className="text-xl font-bold text-neon-blue mb-1">Programming Cadet</h3>
               <h4 className="text-lg text-white/90 mb-3">Cisco NetConnect PUP - Manila</h4>
-              <p className="text-base text-white/70 leading-relaxed">Continuous learner across diverse tech stacks and methodologies, building practical software solutions and providing cross-project technical support.
-              </p>
+              <p className="text-base text-white/70 leading-relaxed">Continuous learner across diverse tech stacks and methodologies, building practical software solutions and providing cross-project technical support.</p>
               <div className="flex flex-col gap-3 mt-auto">
                 <div className="flex">
-                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">
-                    Nov 2025 - Mar 2026
-                  </span>
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">Nov 2025 - Mar 2026</span>
                 </div>
               </div>
             </div>
@@ -403,18 +410,13 @@ const App = () => {
             <div className="experience-card flex flex-col p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
               <h3 className="text-xl font-bold text-neon-blue mb-1">UI/UX Cadet</h3>
               <h4 className="text-lg text-white/90 mb-3">Google Developer Groups on Campus - PUP</h4>
-              <p className="text-base text-white/70 leading-relaxed">Applied UI/UX best practices learned through technical coursework to design and iterate on interactive projects in Figma.
-              </p>
+              <p className="text-base text-white/70 leading-relaxed">Applied UI/UX best practices learned through technical coursework to design and iterate on interactive projects in Figma.</p>
               <div className="flex flex-col gap-3 mt-auto">
                 <div className="flex">
-                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">
-                    Nov 2025 - Jun 2026
-                  </span>
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">Nov 2025 - Jun 2026</span>
                 </div>
                 <div className="flex flex-wrap gap-2 mt-1">
-                  <span className="px-3 py-1 text-xs font-medium bg-neon-blue/10 text-neon-blue border border-neon-blue/30 rounded-md">
-                    Figma
-                  </span>
+                  <span className="px-3 py-1 text-xs font-medium bg-neon-blue/10 text-neon-blue border border-neon-blue/30 rounded-md">Figma</span>
                 </div>
               </div>
             </div>
@@ -422,30 +424,17 @@ const App = () => {
             <div className="experience-card flex flex-col p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
               <h3 className="text-xl font-bold text-neon-blue mb-1">Front-End Developer</h3>
               <h4 className="text-lg text-white/90 mb-3">Information Management Course Project</h4>
-              <p className="text-base text-white/70 leading-relaxed">Developed the front-end for a co-working space booking system, collaborating with cross-functional roles to design, deploy, and present the final application.
-              </p>
+              <p className="text-base text-white/70 leading-relaxed">Developed the front-end for a co-working space booking system, collaborating with cross-functional roles to design, deploy, and present the final application.</p>
               <div className="flex flex-col gap-3 mt-auto">
                 <div className="flex">
-                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">
-                    Feb 2026 - Jun 2026
-                  </span>
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">Feb 2026 - Jun 2026</span>
                 </div>
                 <div className="flex flex-wrap gap-2 mt-1">
-                  <span className="px-3 py-1 text-xs font-medium bg-yellow-500/10 text-yellow-500 border border-yellow-500/30 rounded-md">
-                    HTML
-                  </span>
-                  <span className="px-3 py-1 text-xs font-medium bg-green-500/10 text-green-500 border border-green-500/30 rounded-md">
-                    CSS
-                  </span>
-                  <span className="px-3 py-1 text-xs font-medium bg-pink-500/10 text-pink-500 border border-pink-500/30 rounded-md">
-                    JS
-                  </span>
-                  <span className="px-3 py-1 text-xs font-medium bg-orange-400/10 text-orange-400 border border-orange-400/30 rounded-md">
-                    Gemini
-                  </span>
-                  <span className="px-3 py-1 text-xs font-medium bg-neon-blue/10 text-neon-blue border border-neon-blue/30 rounded-md">
-                    GitHub
-                  </span>
+                  <span className="px-3 py-1 text-xs font-medium bg-yellow-500/10 text-yellow-500 border border-yellow-500/30 rounded-md">HTML</span>
+                  <span className="px-3 py-1 text-xs font-medium bg-green-500/10 text-green-500 border border-green-500/30 rounded-md">CSS</span>
+                  <span className="px-3 py-1 text-xs font-medium bg-pink-500/10 text-pink-500 border border-pink-500/30 rounded-md">JS</span>
+                  <span className="px-3 py-1 text-xs font-medium bg-orange-400/10 text-orange-400 border border-orange-400/30 rounded-md">Gemini</span>
+                  <span className="px-3 py-1 text-xs font-medium bg-neon-blue/10 text-neon-blue border border-neon-blue/30 rounded-md">GitHub</span>
                 </div>
               </div>
             </div>
@@ -454,7 +443,6 @@ const App = () => {
       </section>
 
       {/* --- CERTIFICATIONS SECTION --- */}
-      {/* Light text colors applied here since the background is transitioning back to white */}
       <section id="certifications" className="relative z-10 min-h-screen flex items-center px-8 md:px-16 text-gray-900 py-20 transition-colors duration-500">
         <div ref={certificationsRef} className="w-full max-w-7xl mx-auto text-left space-y-8 pl-4 md:pl-8">
           
@@ -463,9 +451,8 @@ const App = () => {
           </h2>
           <div className="w-full h-[2px] bg-black/20"></div>
           
-          {/* Changed from grid-cols-2 to grid-cols-1 to force 1 card per line */}
           <div className="grid grid-cols-1 gap-6 max-w-5xl font-mono">
-
+            {/* Same Certification Cards as before */}
             <div className="cert-card flex flex-col md:flex-row p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm gap-6">
               <div className="flex-1 flex flex-col">
                 <h3 className="text-xl font-bold text-neon-blue mb-1">From Ideas to Investment: VC Webinar for Startups</h3>
@@ -473,24 +460,15 @@ const App = () => {
                 <p className="text-base text-gray-700 leading-relaxed">Gained actionable insights into venture capital (VC) funding lifecycles and the core metrics investors evaluate when assessing early-stage tech startups.</p>
                 <div className="flex flex-col gap-3 mt-auto">
                   <div className="flex flex-wrap gap-2 mt-1">
-                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
-                      Issued: Mar 2026
-                    </span>
-                    <a 
-                      href="https://drive.google.com/file/d/1aWdQfD3hPc30NzZYbt_1E2aGEb_f8rLd/view" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
-                    >
-                      Check Credential
-                    </a>
+                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">Issued: Mar 2026</span>
+                    <a href="https://drive.google.com/file/d/1aWdQfD3hPc30NzZYbt_1E2aGEb_f8rLd/view" target="_blank" rel="noopener noreferrer" className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md">Check Credential</a>
                   </div>
                 </div>
               </div>
-              <div className="w-full md:w-48 lg:w-64 h-48 md:h-auto border-dashed border-black-300 rounded-lg flex items-center justify-center shrink-0">
-                <img 
-                  src={`${import.meta.env.BASE_URL}01.png`} 
-                  alt="certificate"
+              <div className="w-full md:w-48 lg:w-64 h-auto border-dashed border-black/20 rounded-lg flex items-center justify-center shrink-0 overflow-hidden mt-2 md:mt-0">
+                <img src={`${import.meta.env.BASE_URL}01.png`} 
+                      alt="certificate"
+                      className="w-full h-auto object-contain rounded-lg shadow-sm"      
                 />
               </div>
             </div>
@@ -502,24 +480,15 @@ const App = () => {
                 <p className="text-base text-gray-700 leading-relaxed">Completed a 4-hour technical training focused on foundational Business Intelligence concepts and data visualization using Microsoft Power BI. Learned to transform raw dataset structures into interactive dashboards and visual reports to support data-driven decision-making.</p>
                 <div className="flex flex-col gap-3 mt-auto">
                   <div className="flex flex-wrap gap-2 mt-1">
-                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
-                      Issued: Feb 2026
-                    </span>
-                    <a 
-                      href="https://sites.google.com/dict.gov.ph/ilcd-r9basulta/2026/february/26sul-dwi02-022716?pli=1&authuser=0" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
-                    >
-                      Check Credential
-                    </a>
+                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">Issued: Feb 2026</span>
+                    <a href="https://sites.google.com/dict.gov.ph/ilcd-r9basulta/2026/february/26sul-dwi02-022716?pli=1&authuser=0" target="_blank" rel="noopener noreferrer" className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md">Check Credential</a>
                   </div>
                 </div>
               </div>
-              <div className="w-full md:w-48 lg:w-64 h-48 md:h-auto border-dashed border-black-300 rounded-lg flex items-center justify-center shrink-0">
-                <img 
-                  src={`${import.meta.env.BASE_URL}02.jpg`} 
-                  alt="certificate"
+              <div className="w-full md:w-48 lg:w-64 h-auto border-dashed border-black/20 rounded-lg flex items-center justify-center shrink-0 overflow-hidden mt-2 md:mt-0">
+                <img src={`${import.meta.env.BASE_URL}02.jpg`} 
+                      alt="certificate" 
+                      className="w-full h-auto object-contain rounded-lg shadow-sm"      
                 />
               </div>
             </div>
@@ -531,24 +500,15 @@ const App = () => {
                 <p className="text-base text-gray-700 leading-relaxed">Completed a comprehensive 20-hour skill track focused on foundational Java programming and core software development concepts. Developed core logic and algorithmic thinking by mastering control flow structures, loops, method declarations, and array manipulations.</p>
                 <div className="flex flex-col gap-3 mt-auto">
                   <div className="flex flex-wrap gap-2 mt-1">
-                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
-                      Issued: Jan 2026
-                    </span>
-                    <a 
-                      href="https://www.datacamp.com/completed/statement-of-accomplishment/track/81389061fd2afec4db7a62f8325fbf7a04e9e873" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
-                    >
-                      Check Credential
-                    </a>
+                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">Issued: Jan 2026</span>
+                    <a href="https://www.datacamp.com/completed/statement-of-accomplishment/track/81389061fd2afec4db7a62f8325fbf7a04e9e873" target="_blank" rel="noopener noreferrer" className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md">Check Credential</a>
                   </div>
                 </div>
               </div>
-              <div className="w-full md:w-48 lg:w-64 h-48 md:h-auto border-dashed border-black-300 rounded-lg flex items-center justify-center shrink-0">
-                <img 
-                  src={`${import.meta.env.BASE_URL}03.png`} 
-                  alt="certificate"
+              <div className="w-full md:w-48 lg:w-64 h-auto border-dashed border-black/20 rounded-lg flex items-center justify-center shrink-0 overflow-hidden mt-2 md:mt-0">
+                <img src={`${import.meta.env.BASE_URL}03.png`} 
+                      alt="certificate" 
+                      className="w-full h-auto object-contain rounded-lg shadow-sm"      
                 />
               </div>
             </div>
@@ -560,24 +520,15 @@ const App = () => {
                 <p className="text-base text-gray-700 leading-relaxed">Completed a 4-hour course focused on deepening core Object-Oriented Programming (OOP) concepts in Java. Learned key software design principles, including inheritance, polymorphism, abstract classes, and interfaces to build modular application structures.</p>
                 <div className="flex flex-col gap-3 mt-auto">
                   <div className="flex flex-wrap gap-2 mt-1">
-                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
-                      Issued: Nov 2025
-                    </span>
-                    <a 
-                      href="https://www.datacamp.com/completed/statement-of-accomplishment/course/1bb9372d223619574aa564bd1a9939972a989b82" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
-                    >
-                      Check Credential
-                    </a>
+                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">Issued: Nov 2025</span>
+                    <a href="https://www.datacamp.com/completed/statement-of-accomplishment/course/1bb9372d223619574aa564bd1a9939972a989b82" target="_blank" rel="noopener noreferrer" className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md">Check Credential</a>
                   </div>
                 </div>
               </div>
-              <div className="w-full md:w-48 lg:w-64 h-48 md:h-auto border-dashed border-black-300 rounded-lg flex items-center justify-center shrink-0">
-                <img 
-                  src={`${import.meta.env.BASE_URL}06.png`} 
-                  alt="certificate"
+              <div className="w-full md:w-48 lg:w-64 h-auto border-dashed border-black/20 rounded-lg flex items-center justify-center shrink-0 overflow-hidden mt-2 md:mt-0">
+                <img src={`${import.meta.env.BASE_URL}06.png`} 
+                      alt="certificate" 
+                      className="w-full h-auto object-contain rounded-lg shadow-sm"      
                 />
               </div>
             </div>
@@ -589,24 +540,15 @@ const App = () => {
                 <p className="text-base text-gray-700 leading-relaxed">Completed a 4-hour hands-on course focusing on advanced relational database querying and data filtering techniques. Learned multi-table joins (INNER, LEFT, RIGHT, FULL), set operations, and relational data querying across complex database structures.</p>
                 <div className="flex flex-col gap-3 mt-auto">
                   <div className="flex flex-wrap gap-2 mt-1">
-                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
-                      Issued: Dec 2025
-                    </span>
-                    <a 
-                      href="https://www.datacamp.com/completed/statement-of-accomplishment/course/0e69c3172867a0e7d0a12bf64507489419833bde" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
-                    >
-                      Check Credential
-                    </a>
+                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">Issued: Dec 2025</span>
+                    <a href="https://www.datacamp.com/completed/statement-of-accomplishment/course/0e69c3172867a0e7d0a12bf64507489419833bde" target="_blank" rel="noopener noreferrer" className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md">Check Credential</a>
                   </div>
                 </div>
               </div>
-              <div className="w-full md:w-48 lg:w-64 h-48 md:h-auto border-dashed border-black-300 rounded-lg flex items-center justify-center shrink-0">
-                <img 
-                  src={`${import.meta.env.BASE_URL}04.png`} 
-                  alt="certificate"
+              <div className="w-full md:w-48 lg:w-64 h-auto border-dashed border-black/20 rounded-lg flex items-center justify-center shrink-0 overflow-hidden mt-2 md:mt-0">
+                <img src={`${import.meta.env.BASE_URL}04.png`} 
+                      alt="certificate" 
+                      className="w-full h-auto object-contain rounded-lg shadow-sm"      
                 />
               </div>
             </div>
@@ -618,28 +560,18 @@ const App = () => {
                 <p className="text-base text-gray-700 leading-relaxed">Mastered foundational User Interface (UI) and User Experience (UX) design concepts, user research methodologies, and wireframing techniques. Practiced designing user-centered digital interfaces focusing on usability, visual hierarchy, information architecture, and accessibility standards.</p>
                 <div className="flex flex-col gap-3 mt-auto">
                   <div className="flex flex-wrap gap-2 mt-1">
-                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">
-                      Issued: Nov 2025
-                    </span>
-                    <a 
-                      href="https://www.codecademy.com/profiles/cloud6377250821/certificates/4ccef8d532484ea2aeec3b3b3dbb4f9c" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md"
-                    >
-                      Check Credential
-                    </a>
+                    <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">Issued: Nov 2025</span>
+                    <a href="https://www.codecademy.com/profiles/cloud6377250821/certificates/4ccef8d532484ea2aeec3b3b3dbb4f9c" target="_blank" rel="noopener noreferrer" className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md">Check Credential</a>
                   </div>
                 </div>
               </div>
-              <div className="w-full md:w-48 lg:w-64 h-48 md:h-auto border-dashed border-black-300 rounded-lg flex items-center justify-center shrink-0">
-                <img 
-                  src={`${import.meta.env.BASE_URL}05.png`} 
-                  alt="certificate"
+              <div className="w-full md:w-48 lg:w-64 h-auto border-dashed border-black/20 rounded-lg flex items-center justify-center shrink-0 overflow-hidden mt-2 md:mt-0">
+                <img src={`${import.meta.env.BASE_URL}05.png`} 
+                      alt="certificate" 
+                      className="w-full h-auto object-contain rounded-lg shadow-sm"      
                 />
               </div>
             </div>
-
           </div>
         </div>
       </section>

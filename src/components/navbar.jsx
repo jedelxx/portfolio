@@ -27,7 +27,7 @@ const Navbar = ({ isScrolled, isDarkBg }) => {
 
   return (
     <>
-      {/* --- MOBILE TOPBAR --- */}
+      {/* --- MOBILE NAVBAR --- */}
       <div 
         className={`md:hidden fixed top-0 left-0 w-full z-50 p-6 flex justify-between items-center transition-colors duration-300 ${
           isDarkBg || isOpen ? 'bg-black text-white' : 'bg-[#FBFBFB] text-black'
@@ -74,14 +74,13 @@ const Navbar = ({ isScrolled, isDarkBg }) => {
             </li>
           ))}
           
-          {/* Mobile Connect Button */}
           <li className="mt-4">
             <a 
               href="#contact" 
               onClick={closeMenu}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-mono text-sm font-bold uppercase tracking-wider text-black bg-white border border-white/10 shadow-lg transition-all duration-300 ease-out hover:-translate-y-1 hover:bg-[#F2842F] hover:text-white group"
             >
-              <span>Let's connect?</span>
+              <span>Let's connect!</span>
               <span className="transition-transform duration-300 group-hover:translate-x-1">&gt;</span>
             </a>
           </li>
@@ -97,7 +96,6 @@ const Navbar = ({ isScrolled, isDarkBg }) => {
             : 'top-20 left-10 h-auto w-60 flex-col py-6 px-8 bg-transparent'
         }`}
       >
-        {/* Game Logo / Title */}
         <a href="#home" className={`flex items-center gap-2 group ${isScrolled ? 'mb-0' : 'mb-8'}`}>
           <span className="text-[#F2842F] font-mono tracking-widest text-lg">[</span>
           <span className={`font-extrabold tracking-wider uppercase text-2xl group-hover:text-[#F2842F] transition-colors duration-500 ${
@@ -108,7 +106,6 @@ const Navbar = ({ isScrolled, isDarkBg }) => {
           <span className="text-[#F2842F] font-mono tracking-widest text-lg">]</span>
         </a>
 
-        {/* Menu Options & Connect Button Container */}
         <div className={`flex ${isScrolled ? 'flex-row items-center gap-8' : 'flex-col gap-6'}`}>
           <ul className={`flex ${isScrolled ? 'flex-row gap-8' : 'flex-col gap-6'}`}>
             {navLinks.map((link) => (
@@ -118,35 +115,31 @@ const Navbar = ({ isScrolled, isDarkBg }) => {
                   onMouseEnter={playHoverSound}
                   className="relative flex items-center font-semibold uppercase tracking-widest text-sm py-2 group transition-all"
                 >
-                  {/* Hover Caret Effect */}
                   <span className={`absolute text-[#F2842F] transition-all duration-200 font-mono opacity-0 group-hover:opacity-100 ${
                     isScrolled ? '-top-3 left-1/2 -translate-x-1/2 text-xs' : '-left-6'
                   }`}>
                     {isScrolled ? '.' : '>'}
                   </span>
                   
-                  {/* Link text turns white on dark backgrounds, dark gray on light backgrounds */}
                   <span className={`transition-colors duration-500 group-hover:text-[#F2842F] ${
                     isDarkBg ? 'text-white' : 'text-gray-900'
                   }`}>
                     {link.title}
                   </span>
 
-                  {/* Bottom underline on hover */}
                   <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#F2842F] transition-all duration-300 group-hover:w-full"></span>
                 </a>
               </li>
             ))}
           </ul>
 
-          {/* Desktop "Let's connect?" Button placed right under Contact */}
           {!isScrolled && (
             <div className="mt-4">
               <a
                 href="#contact"
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider text-black bg-white border border-black/10 shadow-md transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-xl hover:bg-orange hover:text-white group"
               >
-                <span>Let's connect?</span>
+                <span>Let's connect!</span>
                 <span className="transition-transform duration-300 group-hover:translate-x-1">&gt;</span>
               </a>
             </div>

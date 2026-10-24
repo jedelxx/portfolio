@@ -45,11 +45,10 @@ section {
 }
 
 .cursor-color-reveal {
-  /* We use the gradient to define BOTH the hover color and the base color */
   background-image: radial-gradient(
     circle 250px at var(--mouse-x, -500px) var(--mouse-y, -500px),
-    #FA4EAB 0%,     /* The glow color (Neon Blue) */
-    #865DFF 100%    /* The base text color (Grey) - Replaced 'transparent' with this! */
+    #FA4EAB 0%,    
+    #865DFF 100% 
   );
   
   -webkit-background-clip: text;
@@ -58,4 +57,14 @@ section {
   /* Make the font itself transparent so the background gradient shows through */
   color: transparent;
   -webkit-text-fill-color: transparent;
+}
+
+/* The base class for the panels */
+.panel {
+  background-color: #ffffff;
+  transition: background-color 0.8s ease-in-out; 
+}
+
+.panel.active-neon {
+  background-color: #00f3ff; 
 }

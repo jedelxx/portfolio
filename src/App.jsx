@@ -10,28 +10,25 @@ const App = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDarkBg, setIsDarkBg] = useState(false);
-  
-  // NEW: State to check if the device is mobile
   const [isMobile, setIsMobile] = useState(false);
-
   const introRef = useRef(null);
   const heroRef = useRef(null);
   const aboutRef = useRef(null);
   const skillsRef = useRef(null); 
   const experienceRef = useRef(null);
   const certificationsRef = useRef(null); 
+  const contactSectionRef = useRef(null);
+  const contactRef = useRef(null); 
   const bgOverlayRef = useRef(null); 
+  const bgNeonRef = useRef(null);
   const [displayText, setDisplayText] = useState('j3d3l.3x3');
   const [isStabilized, setIsStabilized] = useState(false);
   const bgLinesRef = useRef([]);
 
-  // NEW: Effect to listen to window resizing and set mobile state
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
-    // Set initial value
     handleResize();
 
     window.addEventListener('resize', handleResize);
@@ -39,7 +36,6 @@ const App = () => {
   }, []);
 
   const handleMouseMove = (e) => {
-    // Disable effect entirely on mobile to save performance
     if (!heroRef.current || isMobile) return; 
     
     const rect = heroRef.current.getBoundingClientRect();
@@ -155,13 +151,25 @@ const App = () => {
     );
 
     gsap.fromTo(
+      bgNeonRef.current,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        immediateRender: false,
+        scrollTrigger: {
+          trigger: contactSectionRef.current,
+          start: 'top 100%', 
+          end: 'top 70%',     
+          scrub: 1.2,
+        },
+      }
+    );
+
+    gsap.fromTo(
       bgLinesRef.current,
       { opacity: 0, x: -100 }, 
       { opacity: 1, x: 0, duration: 1.4, ease: 'power3.out', stagger: 0.25, delay: 0.3 }
     );
-    
-    // FIX 2: Removed the broken heroRef GSAP ScrollTrigger animation 
-    // that was setting the parent section opacity to 0 and failing on mobile.
 
     gsap.fromTo(
       aboutRef.current,
@@ -175,7 +183,6 @@ const App = () => {
       { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'power3.out', stagger: 0.2, scrollTrigger: { trigger: skillsRef.current, start: 'top 85%', toggleActions: 'play reverse play reverse' } }
     );
 
-    // --- EXPERIENCE SECTION SCROLLTRIGGER ---
     if (experienceRef.current) {
       const header = experienceRef.current.children[0];
       const divider = experienceRef.current.children[1];
@@ -217,7 +224,6 @@ const App = () => {
       });
     }
 
-    // --- CERTIFICATIONS SECTION SCROLLTRIGGER ---
     if (certificationsRef.current) {
       const certHeader = certificationsRef.current.children[0];
       const certDivider = certificationsRef.current.children[1];
@@ -259,11 +265,31 @@ const App = () => {
       });
     }
 
+    if (contactRef.current) {
+      const contactChildren = gsap.utils.toArray(contactRef.current.children);
+      
+      gsap.fromTo(
+        contactChildren,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: contactSectionRef.current,
+            start: 'top 75%',
+            toggleActions: 'play none none reverse',
+          }
+        }
+      );
+    }
+
   }, [isLoaded]);
 
   return (
     <>
-      {/* Hacker Glitch Preloader */}
       {!isLoaded && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[black]">
           <h1 
@@ -277,13 +303,16 @@ const App = () => {
         </div>
       )}
 
-      {/* Global Full-Screen Base Light Background */}
       <div className="fixed inset-0 bg-[#FBFBFB] z-0" />
 
-      {/* Global Full-Screen Solid Dark Background Overlay */}
       <div 
         ref={bgOverlayRef}
         className="fixed inset-0 bg-black opacity-0 pointer-events-none z-0"
+      />
+
+      <div 
+        ref={bgNeonRef}
+        className="fixed inset-0 bg-neon-blue opacity-0 pointer-events-none z-0"
       />
 
       {/* Main Portfolio Content */}
@@ -324,6 +353,20 @@ const App = () => {
             <h2 className="text-4xl md:text-5xl font-extrabold text-neon-blue tracking-wide">
               Hi! I’m Jenn (aka Jedel)!
             </h2>
+
+            <div className="flex flex-wrap gap-4 pt-2 font-mono">
+              <div className="px-4 py-2 rounded-lg bg-white/5 border border-orange/20 hover:border-orange/60 transition-all duration-300 backdrop-blur-sm">
+                <span className="text-sm md:text-base text-orange/60">
+                  <span className="font-bold text-orange/60">Full Name:</span> Jennifer Cruz
+                </span>
+              </div>
+
+              <div className="px-4 py-2 rounded-lg bg-white/5 border border-orange/20 hover:border-orange/60 transition-all duration-300 backdrop-blur-sm">
+                <span className="text-sm md:text-base text-orange/60">
+                  <span className="font-bold text-orange/60">Based In: </span><span>Sta. Mesa, Manila</span>
+                </span>
+              </div>
+            </div>
             
             <p className="text-base md:text-xl font-semibold text-white/90 leading-relaxed">
               A third-year Information Technology student specializing in Information Systems Development and consistent Dean's Lister at Polytechnic University of the Philippines – Manila.
@@ -346,7 +389,7 @@ const App = () => {
               className="hidden md:block w-full h-[400px] rounded-xl object-cover object-center"
             />
 
-            {/* MOBILE VIEW: Centered/adjusted frame focusing on your face */}
+            {/* MOBILE VIEW: Centered/adjusted frame */}
             <div className="block md:hidden w-full h-[300px] overflow-hidden relative rounded-3xl">
               <img 
                 src={`${import.meta.env.BASE_URL}me1.jpeg`} 
@@ -354,7 +397,7 @@ const App = () => {
                 className="absolute w-[160%] max-w-none -top-4 -left-[25%] h-[120%] object-cover"
               />
             </div>
-          </div>    
+          </div>  
         </div>
       </section>
 
@@ -485,7 +528,7 @@ const App = () => {
               <div className="w-full md:w-48 lg:w-64 h-auto border-dashed border-black/20 rounded-lg flex items-center justify-center shrink-0 overflow-hidden mt-2 md:mt-0">
                 <img src={`${import.meta.env.BASE_URL}01.png`} 
                       alt="certificate"
-                      className="w-full h-auto object-contain rounded-lg shadow-sm"      
+                      className="w-full h-auto object-contain rounded-lg shadow-sm"     
                 />
               </div>
             </div>
@@ -505,7 +548,7 @@ const App = () => {
               <div className="w-full md:w-48 lg:w-64 h-auto border-dashed border-black/20 rounded-lg flex items-center justify-center shrink-0 overflow-hidden mt-2 md:mt-0">
                 <img src={`${import.meta.env.BASE_URL}02.jpg`} 
                       alt="certificate" 
-                      className="w-full h-auto object-contain rounded-lg shadow-sm"      
+                      className="w-full h-auto object-contain rounded-lg shadow-sm"     
                 />
               </div>
             </div>
@@ -525,7 +568,7 @@ const App = () => {
               <div className="w-full md:w-48 lg:w-64 h-auto border-dashed border-black/20 rounded-lg flex items-center justify-center shrink-0 overflow-hidden mt-2 md:mt-0">
                 <img src={`${import.meta.env.BASE_URL}03.png`} 
                       alt="certificate" 
-                      className="w-full h-auto object-contain rounded-lg shadow-sm"      
+                      className="w-full h-auto object-contain rounded-lg shadow-sm"     
                 />
               </div>
             </div>
@@ -545,7 +588,7 @@ const App = () => {
               <div className="w-full md:w-48 lg:w-64 h-auto border-dashed border-black/20 rounded-lg flex items-center justify-center shrink-0 overflow-hidden mt-2 md:mt-0">
                 <img src={`${import.meta.env.BASE_URL}06.png`} 
                       alt="certificate" 
-                      className="w-full h-auto object-contain rounded-lg shadow-sm"      
+                      className="w-full h-auto object-contain rounded-lg shadow-sm"     
                 />
               </div>
             </div>
@@ -565,7 +608,7 @@ const App = () => {
               <div className="w-full md:w-48 lg:w-64 h-auto border-dashed border-black/20 rounded-lg flex items-center justify-center shrink-0 overflow-hidden mt-2 md:mt-0">
                 <img src={`${import.meta.env.BASE_URL}04.png`} 
                       alt="certificate" 
-                      className="w-full h-auto object-contain rounded-lg shadow-sm"      
+                      className="w-full h-auto object-contain rounded-lg shadow-sm"     
                 />
               </div>
             </div>
@@ -585,11 +628,31 @@ const App = () => {
               <div className="w-full md:w-48 lg:w-64 h-auto border-dashed border-black/20 rounded-lg flex items-center justify-center shrink-0 overflow-hidden mt-2 md:mt-0">
                 <img src={`${import.meta.env.BASE_URL}05.png`} 
                       alt="certificate" 
-                      className="w-full h-auto object-contain rounded-lg shadow-sm"      
+                      className="w-full h-auto object-contain rounded-lg shadow-sm"     
                 />
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* --- CONTACT SECTION --- */}
+      <section id="contact" ref={contactSectionRef} className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 md:px-16 py-20 text-center">
+        <div ref={contactRef} className="w-full max-w-4xl mx-auto space-y-2 flex flex-col items-center justify-center">
+          <h2 className="text-3xl md:text-5xl font-black text-white/70 tracking-tight drop-shadow-sm">
+            get in touch
+          </h2>
+          <a href="mailto:jennifercruz.dc@gmail.com" className="text-4xl md:text-5xl lg:text-7xl font-jersey text-white hover:text-yellow transition-colors duration-300 drop-shadow-sm">
+            jennifercruz.dc@gmail.com
+          </a>
+          <p className="text-xl md:text-2xl font-bold text-white/50 mt-4 drop-shadow-sm">
+            or say hi on <a href="https://linkedin.com/in/jennifercruz" target="_blank" rel="noopener noreferrer" className="text-white/50 hover:text-yellow transition-colors duration-300">LinkedIn</a><a> || </a><a href="https://facebook.com/jnncrzdc/" target="_blank" rel="noopener noreferrer" className="text-white/50 hover:text-yellow transition-colors duration-300">Facebook</a>
+          </p>
+        </div>
+        <div className="absolute bottom-6 left-6 md:left-10 text-left">
+          <p className="text-sm font-mono text-white/40 tracking-wider">
+            © 2026 Jennifer Cruz
+          </p>
         </div>
       </section>
       </main>

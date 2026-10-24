@@ -3,5 +3,5 @@ export const navLinks = [
     {id: 'skills', title: 'Skills'},
     {id: 'experience', title: 'Experiences'},
     {id: 'certifications', title: 'Certifications'},
-    {id: 'contacts', title: 'Contact'},
+    {id: 'contact', title: 'Contact'},
 ]

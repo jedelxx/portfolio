@@ -10,6 +10,10 @@ const App = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDarkBg, setIsDarkBg] = useState(false);
+  
+  // NEW: State to check if the device is mobile
+  const [isMobile, setIsMobile] = useState(false);
+
   const introRef = useRef(null);
   const heroRef = useRef(null);
   const aboutRef = useRef(null);
@@ -21,8 +25,22 @@ const App = () => {
   const [isStabilized, setIsStabilized] = useState(false);
   const bgLinesRef = useRef([]);
 
+  // NEW: Effect to listen to window resizing and set mobile state
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Set initial value
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleMouseMove = (e) => {
-    if (!heroRef.current) return;
+    // Disable effect entirely on mobile to save performance
+    if (!heroRef.current || isMobile) return; 
     
     const rect = heroRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -32,6 +50,8 @@ const App = () => {
     heroRef.current.style.setProperty('--mouse-y', `${y}px`);
   };
   
+  bgLinesRef.current = [];
+
   const addToBgLines = (el) => {
     if (el && !bgLinesRef.current.includes(el)) {
       bgLinesRef.current.push(el);
@@ -105,7 +125,7 @@ const App = () => {
         setIsScrolled(false);
         setIsDarkBg(false);
       },
-      onLeave: () => setIsDarkBg(false),       
+      onLeave: () => setIsDarkBg(false),      
       onEnterBack: () => setIsDarkBg(true),   
     });
 
@@ -115,7 +135,7 @@ const App = () => {
         trigger: aboutRef.current,
         start: 'top 90%', 
         end: 'top 10%',   
-        scrub: 1.2,         
+        scrub: 1.2,        
       },
     });
 
@@ -129,7 +149,7 @@ const App = () => {
           trigger: certificationsRef.current,
           start: 'top 90%', 
           end: 'top 70%',   
-          scrub: 1.2,          
+          scrub: 1.2,        
         },
       }
     );
@@ -140,11 +160,8 @@ const App = () => {
       { opacity: 1, x: 0, duration: 1.4, ease: 'power3.out', stagger: 0.25, delay: 0.3 }
     );
     
-    gsap.fromTo(
-      heroRef.current,
-      { opacity: 0, x: -250 },
-      { opacity: 1, x: 0, duration: 1.5, ease: 'circ.inOut', scrollTrigger: { trigger: heroRef.current, start: 'top 80%', toggleActions: 'play none none none' } }
-    );
+    // FIX 2: Removed the broken heroRef GSAP ScrollTrigger animation 
+    // that was setting the parent section opacity to 0 and failing on mobile.
 
     gsap.fromTo(
       aboutRef.current,
@@ -253,7 +270,7 @@ const App = () => {
             ref={introRef}
             className={`font-extrabold tracking-wider text-5xl md:text-6xl font-mono transition-all duration-100 ${
               isStabilized ? 'text-white' : 'text-neon-blue animate-pulse'
-            }`}        
+            }`}       
           >
             {displayText}
           </h1>
@@ -270,7 +287,6 @@ const App = () => {
       />
 
       {/* Main Portfolio Content */}
-      {/* MODIFIED: Changed from 'ml-72 w-[calc...]' to 'md:ml-72 w-full md:w-[calc...]' for responsiveness */}
       <main className={`relative min-h-screen transition-all duration-700 z-10 pt-16 md:pt-0 ${
         isScrolled ? 'ml-0 w-full' : 'md:ml-72 w-full md:w-[calc(100vw-18rem)]'
       } ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
@@ -278,30 +294,33 @@ const App = () => {
         <Navbar isScrolled={isScrolled} isDarkBg={isDarkBg} />
 
       <section 
-          id="home" 
-          ref={heroRef} 
-          onMouseMove={handleMouseMove}
-          className="relative flex justify-center items-center min-h-screen overflow-hidden"
+        id="home" 
+        ref={heroRef} 
+        onMouseMove={handleMouseMove}
+        className="relative flex flex-col justify-center items-start min-h-screen px-6 md:px-16 overflow-hidden"
+      >
+        <h1 
+          className={`z-0 text-[13vw] md:text-[9.5vw] lg:text-[9vw] font-bold uppercase text-neon-blue select-none tracking-tighter text-left leading-none font-gugi ${
+            !isMobile ? 'cursor-color-reveal' : ''
+          }`}
         >
-          {/* Changed text size to strictly use Viewport Width (vw) so it scales beautifully, and restored leading-none so it doesn't squish */}
-          <h1 className="absolute z-0 top-[20%] md:top-[22%] left-[4%] md:left-[8%] text-[14vw] md:text-[9.5vw] lg:text-[9vw] font-bold uppercase text-neon-blue select-none tracking-tighter text-left w-full px-4 md:px-8 leading-none font-gugi cursor-color-reveal whitespace-nowrap">
-            <span ref={addToBgLines} className="block">
-              EMPOWER
-            </span>
-            <span ref={addToBgLines} className="block">
-              GIRLS, BUILD
-            </span>
-            <span ref={addToBgLines} className="block">
-              TECHNOLOGY.
-            </span>
-          </h1>
-        </section>
-
+          <span ref={addToBgLines} className="block">
+            EMPOWER
+          </span>
+          <span ref={addToBgLines} className="block">
+            GIRLS, BUILD
+          </span>
+          <span ref={addToBgLines} className="block">
+            TECHNOLOGY.
+          </span>
+        </h1>
+      </section>
+      
       {/* About Section */}
-      <section id="about" ref={aboutRef} className="relative z-10 min-h-screen flex items-center px-8 md:px-16 text-[#FBFBFB] py-20">
+      <section id="about" ref={aboutRef} className="relative z-10 min-h-screen flex items-center px-6 md:px-16 text-[#FBFBFB] py-20">
         <div className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
           
-          <div className="text-left space-y-6 md:col-span-7 pl-4 md:pl-8">
+          <div className="text-left space-y-6 md:col-span-7 px-2 md:px-0">
             <h2 className="text-4xl md:text-5xl font-extrabold text-neon-blue tracking-wide">
               Hi! I’m Jenn (aka Jedel)!
             </h2>
@@ -319,7 +338,7 @@ const App = () => {
             </p>
           </div>
 
-          <div className="relative w-full md:w-[450px] mx-auto overflow-hidden shadow-2xl">
+          <div className="relative w-full md:w-[450px] mx-auto overflow-hidden shadow-2xl px-2 md:px-0">
             {/* DESKTOP VIEW: Full portrait image */}
             <img 
               src={`${import.meta.env.BASE_URL}me1.jpeg`} 
@@ -335,13 +354,13 @@ const App = () => {
                 className="absolute w-[160%] max-w-none -top-4 -left-[25%] h-[120%] object-cover"
               />
             </div>
-          </div>       
+          </div>    
         </div>
       </section>
 
       {/* --- SKILLS SECTION --- */}
-      <section id="skills" className="relative z-10 min-h-screen flex items-center px-8 md:px-16 text-[#FBFBFB] py-20">
-        <div ref={skillsRef} className="w-full max-w-7xl mx-auto text-left space-y-8 pl-4 md:pl-8">
+      <section id="skills" className="relative z-10 min-h-screen flex items-center px-6 md:px-16 text-[#FBFBFB] py-20">
+        <div ref={skillsRef} className="w-full max-w-7xl mx-auto text-left space-y-8 px-2 md:px-0">
           <h2 className="text-4xl md:text-6xl font-black uppercase text-white tracking-wider flex items-center gap-3">
             Skills<span className="text-neon-blue">.</span>
           </h2>
@@ -364,8 +383,8 @@ const App = () => {
       </section>
 
       {/* --- EXPERIENCE SECTION --- */}
-      <section id="experience" className="relative z-10 min-h-screen flex items-center px-8 md:px-16 text-[#FBFBFB] py-20">
-        <div ref={experienceRef} className="w-full max-w-7xl mx-auto text-left space-y-8 pl-4 md:pl-8">
+      <section id="experience" className="relative z-10 min-h-screen flex items-center px-6 md:px-16 text-[#FBFBFB] py-20">
+        <div ref={experienceRef} className="w-full max-w-7xl mx-auto text-left space-y-8 px-2 md:px-0">
           
           <h2 className="text-4xl md:text-6xl font-black uppercase text-white tracking-wider flex items-center gap-3">
             Experiences<span className="text-neon-blue">.</span>
@@ -373,7 +392,6 @@ const App = () => {
           <div className="w-full h-[2px] bg-white/20"></div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl font-mono">
-            {/* Same Experience Cards as before */}
             <div className="experience-card flex flex-col p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
               <h3 className="text-xl font-bold text-neon-blue mb-1">Operations Associate</h3>
               <h4 className="text-lg text-white/90 mb-3">Google Developer Groups on Campus - PUP</h4>
@@ -443,8 +461,8 @@ const App = () => {
       </section>
 
       {/* --- CERTIFICATIONS SECTION --- */}
-      <section id="certifications" className="relative z-10 min-h-screen flex items-center px-8 md:px-16 text-gray-900 py-20 transition-colors duration-500">
-        <div ref={certificationsRef} className="w-full max-w-7xl mx-auto text-left space-y-8 pl-4 md:pl-8">
+      <section id="certifications" className="relative z-10 min-h-screen flex items-center px-6 md:px-16 text-gray-900 py-20 transition-colors duration-500">
+        <div ref={certificationsRef} className="w-full max-w-7xl mx-auto text-left space-y-8 px-2 md:px-0">
           
           <h2 className="text-4xl md:text-6xl font-black uppercase text-black tracking-wider flex items-center gap-3">
             Certifications<span className="text-neon-blue">.</span>
@@ -452,7 +470,6 @@ const App = () => {
           <div className="w-full h-[2px] bg-black/20"></div>
           
           <div className="grid grid-cols-1 gap-6 max-w-5xl font-mono">
-            {/* Same Certification Cards as before */}
             <div className="cert-card flex flex-col md:flex-row p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm gap-6">
               <div className="flex-1 flex flex-col">
                 <h3 className="text-xl font-bold text-neon-blue mb-1">From Ideas to Investment: VC Webinar for Startups</h3>

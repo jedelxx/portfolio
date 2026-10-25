@@ -105,8 +105,6 @@ const App = () => {
       
   useEffect(() => {
     if (!isLoaded) return;
-
-    // 1. Wrap everything in gsap.context()
     const ctx = gsap.context(() => {
       
       ScrollTrigger.create({
@@ -145,7 +143,6 @@ const App = () => {
         { opacity: 1, y: 0, duration: 1.5, ease: 'power3.out', scrollTrigger: { trigger: aboutRef.current, start: 'top 85%', toggleActions: 'play none none none' } }
       );
 
-      // Changed toggleActions to prevent premature reversing
       gsap.fromTo(skillsRef.current,
         { opacity: 0, y: 60, scale: 0.95 },
         { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'power3.out', stagger: 0.2, scrollTrigger: { trigger: skillsRef.current, start: 'top 85%', toggleActions: 'play none none reverse' } }
@@ -223,9 +220,8 @@ const App = () => {
         ScrollTrigger.refresh();
       }, 500);
 
-    }); // <-- End of gsap.context()
+    });
 
-    // 2. THIS IS THE MOST IMPORTANT LINE: Cleanup GSAP on unmount
     return () => ctx.revert(); 
     
   }, [isLoaded]);

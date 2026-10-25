@@ -46,8 +46,6 @@ const App = () => {
     heroRef.current.style.setProperty('--mouse-y', `${y}px`);
   };
   
-  bgLinesRef.current = [];
-
   const addToBgLines = (el) => {
     if (el && !bgLinesRef.current.includes(el)) {
       bgLinesRef.current.push(el);
@@ -108,184 +106,128 @@ const App = () => {
   useEffect(() => {
     if (!isLoaded) return;
 
-    ScrollTrigger.create({
-      trigger: aboutRef.current,
-      start: 'top center',
-      endTrigger: experienceRef.current,
-      end: 'bottom center',
-      onEnter: () => {
-        setIsScrolled(true);
-        setIsDarkBg(true);
-      },
-      onLeaveBack: () => {
-        setIsScrolled(false);
-        setIsDarkBg(false);
-      },
-      onLeave: () => setIsDarkBg(false),      
-      onEnterBack: () => setIsDarkBg(true),   
-    });
-
-    gsap.to(bgOverlayRef.current, {
-      opacity: 1,
-      scrollTrigger: {
-        trigger: aboutRef.current,
-        start: 'top 90%', 
-        end: 'top 10%',   
-        scrub: 1.2,        
-      },
-    });
-
-    gsap.fromTo(
-      bgOverlayRef.current,
-      { opacity: 1 },
-      {
-        opacity: 0,
-        immediateRender: false, 
-        scrollTrigger: {
-          trigger: certificationsRef.current,
-          start: 'top 90%', 
-          end: 'top 70%',   
-          scrub: 1.2,        
-        },
-      }
-    );
-
-    gsap.fromTo(
-      bgNeonRef.current,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        immediateRender: false,
-        scrollTrigger: {
-          trigger: contactSectionRef.current,
-          start: 'top 100%', 
-          end: 'top 70%',     
-          scrub: 1.2,
-        },
-      }
-    );
-
-    gsap.fromTo(
-      bgLinesRef.current,
-      { opacity: 0, x: -100 }, 
-      { opacity: 1, x: 0, duration: 1.4, ease: 'power3.out', stagger: 0.25, delay: 0.3 }
-    );
-
-    gsap.fromTo(
-      aboutRef.current,
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 1.5, ease: 'power3.out', scrollTrigger: { trigger: aboutRef.current, start: 'top 85%', toggleActions: 'play none none none' } }
-    );
-
-    gsap.fromTo(
-      skillsRef.current,
-      { opacity: 0, y: 60, scale: 0.95 },
-      { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'power3.out', stagger: 0.2, scrollTrigger: { trigger: skillsRef.current, start: 'top 85%', toggleActions: 'play reverse play reverse' } }
-    );
-
-    if (experienceRef.current) {
-      const header = experienceRef.current.children[0];
-      const divider = experienceRef.current.children[1];
-      const cards = gsap.utils.toArray(experienceRef.current.querySelectorAll('.experience-card'));
-
-      gsap.fromTo(
-        [header, divider],
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: experienceRef.current,
-            start: 'top 85%',
-            toggleActions: 'play reverse play reverse',
-          }
-        }
-      );
-
-      cards.forEach((card) => {
-        gsap.fromTo(
-          card,
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 80%',
-              toggleActions: 'play none play reverse',
-            }
-          }
-        );
-      });
-    }
-
-    if (certificationsRef.current) {
-      const certHeader = certificationsRef.current.children[0];
-      const certDivider = certificationsRef.current.children[1];
-      const certCards = gsap.utils.toArray(certificationsRef.current.querySelectorAll('.cert-card'));
-
-      gsap.fromTo(
-        [certHeader, certDivider],
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: certificationsRef.current,
-            start: 'top 85%',
-            toggleActions: 'play reverse play reverse',
-          }
-        }
-      );
-
-      certCards.forEach((card) => {
-        gsap.fromTo(
-          card,
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 100%',
-              toggleActions: 'play none play reverse',
-            }
-          }
-        );
-      });
-    }
-
-    if (contactRef.current) {
-      const contactChildren = gsap.utils.toArray(contactRef.current.children);
+    // 1. Wrap everything in gsap.context()
+    const ctx = gsap.context(() => {
       
-      gsap.fromTo(
-        contactChildren,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: contactSectionRef.current,
-            start: 'top 75%',
-            toggleActions: 'play none none reverse',
-          }
-        }
-      );
-    }
+      ScrollTrigger.create({
+        trigger: aboutRef.current,
+        start: 'top center',
+        endTrigger: experienceRef.current,
+        end: 'bottom center',
+        onEnter: () => { setIsScrolled(true); setIsDarkBg(true); },
+        onLeaveBack: () => { setIsScrolled(false); setIsDarkBg(false); },
+        onLeave: () => setIsDarkBg(false),      
+        onEnterBack: () => setIsDarkBg(true),   
+      });
 
+      gsap.to(bgOverlayRef.current, {
+        opacity: 1,
+        scrollTrigger: { trigger: aboutRef.current, start: 'top 90%', end: 'top 10%', scrub: 1.2 },
+      });
+
+      gsap.fromTo(bgOverlayRef.current, { opacity: 1 }, {
+        opacity: 0, immediateRender: false, 
+        scrollTrigger: { trigger: certificationsRef.current, start: 'top 90%', end: 'top 70%', scrub: 1.2 },
+      });
+
+      gsap.fromTo(bgNeonRef.current, { opacity: 0 }, {
+        opacity: 1, immediateRender: false,
+        scrollTrigger: { trigger: contactSectionRef.current, start: 'top 100%', end: 'top 70%', scrub: 1.2 },
+      });
+
+      gsap.fromTo(bgLinesRef.current,
+        { opacity: 0, x: -100 }, 
+        { opacity: 1, x: 0, duration: 1.4, ease: 'power3.out', stagger: 0.25, delay: 0.3 }
+      );
+
+      gsap.fromTo(aboutRef.current,
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 1.5, ease: 'power3.out', scrollTrigger: { trigger: aboutRef.current, start: 'top 85%', toggleActions: 'play none none none' } }
+      );
+
+      // Changed toggleActions to prevent premature reversing
+      gsap.fromTo(skillsRef.current,
+        { opacity: 0, y: 60, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'power3.out', stagger: 0.2, scrollTrigger: { trigger: skillsRef.current, start: 'top 85%', toggleActions: 'play none none reverse' } }
+      );
+
+      if (experienceRef.current) {
+        const header = experienceRef.current.children[0];
+        const divider = experienceRef.current.children[1];
+        const cards = gsap.utils.toArray(experienceRef.current.querySelectorAll('.experience-card'));
+
+        gsap.fromTo([header, divider],
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.5, stagger: 0.2, ease: 'power3.out', scrollTrigger: { trigger: experienceRef.current, start: 'top 90%', toggleActions: 'play none none reverse' } }
+        );
+
+        cards.forEach((card) => {
+          gsap.fromTo(card,
+            { opacity: 0, y: 50 },
+            { 
+              opacity: 1, y: 0, duration: 0.4, ease: 'power3.out', 
+              scrollTrigger: { 
+                trigger: card, 
+                start: 'top 95%', 
+                toggleActions: 'play none none reverse', 
+              } 
+            }
+          );
+        });
+      }
+
+      if (certificationsRef.current) {
+        const certHeader = certificationsRef.current.children[0];
+        const certDivider = certificationsRef.current.children[1];
+        const certCards = gsap.utils.toArray(certificationsRef.current.querySelectorAll('.cert-card'));
+
+        gsap.fromTo([certHeader, certDivider],
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'power3.out', scrollTrigger: { trigger: certificationsRef.current, start: 'top 85%', toggleActions: 'play reverse play reverse' } }
+        );
+
+        certCards.forEach((card) => {
+          gsap.fromTo(card,
+            { opacity: 0, y: 50 },
+            { 
+              opacity: 1, y: 0, duration: 0, ease: 'power3.out', 
+              scrollTrigger: { 
+                trigger: card, 
+                start: 'top 95%', 
+                toggleActions: 'play none none none', 
+              } 
+            }
+          );
+        });
+      }
+
+      if (contactRef.current) {
+        const contactChildren = gsap.utils.toArray(contactRef.current.children);
+        
+        gsap.to(contactChildren, { 
+          opacity: 1, 
+          y: 0, 
+          duration: 1, 
+          stagger: 0.2, 
+          ease: 'power3.out', 
+          scrollTrigger: { 
+            trigger: contactSectionRef.current, 
+            start: 'top 95%', 
+            refreshPriority: -1,
+            toggleActions: 'play none none reverse' 
+          } 
+        });
+      }   
+
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 500);
+
+    }); // <-- End of gsap.context()
+
+    // 2. THIS IS THE MOST IMPORTANT LINE: Cleanup GSAP on unmount
+    return () => ctx.revert(); 
+    
   }, [isLoaded]);
 
   return (
@@ -639,10 +581,10 @@ const App = () => {
       {/* --- CONTACT SECTION --- */}
       <section id="contact" ref={contactSectionRef} className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 md:px-16 py-20 text-center">
         <div ref={contactRef} className="w-full max-w-4xl mx-auto space-y-2 flex flex-col items-center justify-center">
-          <h2 className="text-3xl md:text-5xl font-black text-white/70 tracking-tight drop-shadow-sm">
+          <h2 className="text-3xl md:text-5xl font-black text-white/50 tracking-tight drop-shadow-sm">
             get in touch
           </h2>
-          <a href="mailto:jennifercruz.dc@gmail.com" className="text-4xl md:text-5xl lg:text-7xl font-jersey text-white hover:text-yellow transition-colors duration-300 drop-shadow-sm">
+          <a href="mailto:jennifercruz.dc@gmail.com" className="text-4xl md:text-5xl lg:text-7xl font-black text-white hover:text-yellow transition-colors duration-300 drop-shadow-sm">
             jennifercruz.dc@gmail.com
           </a>
           <p className="text-xl md:text-2xl font-bold text-white/50 mt-4 drop-shadow-sm">
@@ -650,7 +592,7 @@ const App = () => {
           </p>
         </div>
         <div className="absolute bottom-6 left-6 md:left-10 text-left">
-          <p className="text-sm font-mono text-white/40 tracking-wider">
+          <p className="text-sm font-mono text-white/40 tracking-tight">
             © 2026 Jennifer Cruz
           </p>
         </div>

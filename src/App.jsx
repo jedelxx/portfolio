@@ -437,6 +437,17 @@ const App = () => {
                 </div>
               </div>
             </div>
+
+            <div className="experience-card flex flex-col p-6 rounded-xl bg-white/5 border border-white/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-neon-blue mb-1">Software Development Cadet</h3>
+              <h4 className="text-lg text-white/90 mb-3">Google Developer Groups on Campus - PUP</h4>
+              <p className="text-base text-white/70 leading-relaxed">Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur facilis quisquam quos aspernatur magnam ut velit laudantium maxime sit, omnis nesciunt id at, deleniti odio! Obcaecati pariatur quasi possimus in?</p>
+              <div className="flex flex-col gap-3 mt-auto">
+                <div className="flex">
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-white/10 text-white/80 border border-white/20 rounded-md">Nov 2026 - Present</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -449,8 +460,26 @@ const App = () => {
             Certifications<span className="text-neon-blue">.</span>
           </h2>
           <div className="w-full h-[2px] bg-black/20"></div>
-          
           <div className="grid grid-cols-1 gap-6 max-w-5xl font-mono">
+          <div className="cert-card flex flex-col md:flex-row p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm gap-6">
+            <div className="flex-1 flex flex-col">
+              <h3 className="text-xl font-bold text-neon-blue mb-1">TechSTART October  with the theme: Think Tank AI — Introduction to AI-Assisted Ideation</h3>
+              <h4 className="text-lg text-gray-800 mb-3 mt-2">Department of Science and Technology</h4>
+              <p className="text-base text-gray-700 leading-relaxed">/</p>
+              <div className="flex flex-col gap-3 mt-auto">
+                <div className="flex flex-wrap gap-2 mt-1">
+                  <span className="px-3 py-1 mt-6 text-sm font-semibold bg-yellow/10 text-orange-400 border border-yellow rounded-md">Issued: Nov 2026</span>
+                  <a href="https://drive.google.com/file/d/1aiGHWusEODqcLSb5ilu9Pb133zsncErS/view" target="_blank" rel="noopener noreferrer" className="px-3 py-1 mt-6 text-sm font-semibold bg-pink/20 text-pink/60 border border-pink rounded-md">Check Credential</a>
+                </div>
+              </div>
+            </div>
+            <div className="w-full md:w-48 lg:w-64 h-auto border-dashed border-black/20 rounded-lg flex items-center justify-center shrink-0 overflow-hidden mt-2 md:mt-0">
+              <img src={`${import.meta.env.BASE_URL}07.png`} 
+                    alt="certificate" 
+                    className="w-full h-auto object-contain rounded-lg shadow-sm"     
+              />
+            </div>
+          </div>
             <div className="cert-card flex flex-col md:flex-row p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm gap-6">
               <div className="flex-1 flex flex-col">
                 <h3 className="text-xl font-bold text-neon-blue mb-1">From Ideas to Investment: VC Webinar for Startups</h3>
@@ -470,7 +499,6 @@ const App = () => {
                 />
               </div>
             </div>
-            
             <div className="cert-card flex flex-col md:flex-row p-6 rounded-xl bg-black/5 border border-black/10 hover:border-neon-blue/50 transition-all duration-300 backdrop-blur-sm gap-6">
               <div className="flex-1 flex flex-col">
                 <h3 className="text-xl font-bold text-neon-blue mb-1">Data to Insights: Introduction to Business Intelligence with Power BI</h3>

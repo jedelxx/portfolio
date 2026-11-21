@@ -288,9 +288,9 @@ const App = () => {
         <div className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
           
           <div className="text-left space-y-6 md:col-span-7 px-2 md:px-0">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-neon-blue tracking-wide">
+            {/* <h2 className="text-4xl md:text-5xl font-extrabold text-neon-blue tracking-wide">
               Hi! I’m Jenn (aka Jedel)!
-            </h2>
+            </h2> */}
 
             <div className="flex flex-wrap gap-4 pt-2 font-mono">
               <div className="px-4 py-2 rounded-lg bg-white/5 border border-orange/20 hover:border-orange/60 transition-all duration-300 backdrop-blur-sm">
@@ -612,7 +612,7 @@ const App = () => {
             jennifercruz.dc@gmail.com
           </a>
           <p className="text-xl md:text-2xl font-bold text-white/50 mt-4 drop-shadow-sm">
-            or say hi on <a href="https://linkedin.com/in/jennifercruz" target="_blank" rel="noopener noreferrer" className="text-white/50 hover:text-yellow transition-colors duration-300">LinkedIn</a><a> || </a><a href="https://facebook.com/jnncrzdc/" target="_blank" rel="noopener noreferrer" className="text-white/50 hover:text-yellow transition-colors duration-300">Facebook</a>
+            or say hi on <a href="https://www.linkedin.com/in/jennifercruz-pup/" target="_blank" rel="noopener noreferrer" className="text-white/50 hover:text-yellow transition-colors duration-300">LinkedIn</a><a> || </a><a href="https://facebook.com/jnncrzdc/" target="_blank" rel="noopener noreferrer" className="text-white/50 hover:text-yellow transition-colors duration-300">Facebook</a>
           </p>
         </div>
         <div className="absolute bottom-6 left-6 md:left-10 text-left">
